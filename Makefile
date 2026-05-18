@@ -43,13 +43,13 @@ LIBFT_FLAGS = -L$(LIBFT_DIR) -lft
 
 # ----- MiniLibX -----
 ifeq ($(UNAME_S), Darwin)
-	MLX_DIR = minilibx_macos	# haven't confirm the dir version
-	MLX_LIB = $(MLX_DIR)/libmlx.a
-	MLX_FLAGS = -L$(MLX_DIR) -lmlx -framework OpenGL -framework AppKit
+MLX_DIR = minilibx_macos	# haven't confirm the dir version
+MLX_LIB = $(MLX_DIR)/libmlx.a
+MLX_FLAGS = -L$(MLX_DIR) -lmlx -framework OpenGL -framework AppKit
 else ifeq ($(UNAME_S), Linux)
-	MLX_DIR = minilibx-linux
-	MLX_LIB = $(MLX_DIR)/libmlx.a
-	MLX_FLAGS = -L$(MLX_DIR) -lmlx -lXext -lX11 -lm
+MLX_DIR = minilibx-linux
+MLX_LIB = $(MLX_DIR)/libmlx.a
+MLX_FLAGS = -L$(MLX_DIR) -lmlx -lXext -lX11 -lm
 endif
 # ifeq = if equal
 
@@ -91,7 +91,7 @@ clean:
 fclean: clean
 	@$(RM) $(NAME)
 	@$(MAKE) -s -C $(LIBFT_DIR) fclean
-	@$(MAKE) -s -C $(MLX_DIR) fclean
+	@$(MAKE) -s -C $(MLX_DIR) clean
 	@echo "Full clean complete."
 
 # ----- Rebuild Rules -----
