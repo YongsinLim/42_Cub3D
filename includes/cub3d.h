@@ -6,12 +6,25 @@
 /*   By: yolim <yolim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 16:35:22 by yolim             #+#    #+#             */
-/*   Updated: 2026/05/18 18:16:14 by yolim            ###   ########.fr       */
+/*   Updated: 2026/05/20 13:44:20 by yolim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 #define CUB3D_H
+
+#include <fcntl.h>  // for open
+#include <unistd.h> // for close, read, write
+#include <stdio.h>  // for printf, perror
+#include <stdlib.h> // for malloc, free, exit
+#include <string.h> // for strerror
+#include <sys/time.h>   // for gettimeofday
+#include <math.h>   // for all functions of the math library
+#include "../Libft/libft.h"
+
+
+// pending for minilibx header file!
+
 
 typedef struct s_texture {
     void    *img;   // ← this is ONE WALL TEXTURE image
@@ -51,6 +64,16 @@ typedef struct s_game {
 
     t_player    player;
 }               t_game;
+
+
+
+
+
+
+
+
+
+
 
 
 
