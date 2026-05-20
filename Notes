@@ -1,0 +1,4 @@
+t_player struct declare using double bcos:
+1. double is what the math library (-lm) returns by default. sin(), cos(), sqrt() all return double. If you store results in float, you're immediately throwing away half the precision the function just calculated.
+2. Your map is a grid of integers — cell [2][3] is just a wall or empty. But the player doesn't live on a grid. They live between cells, moving smoothly through the world. If you used int, your player could only stand at exact grid corners — movement would be jerky and teleporting, like moving one whole cell at a time.
+
