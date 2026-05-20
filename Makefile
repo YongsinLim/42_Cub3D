@@ -43,7 +43,7 @@ LIBFT_FLAGS = -L$(LIBFT_DIR) -lft
 
 # ----- MiniLibX -----
 ifeq ($(UNAME_S), Darwin)
-MLX_DIR = minilibx_macos	# haven't confirm the dir version
+MLX_DIR = minilibx_macos_opengl
 MLX_LIB = $(MLX_DIR)/libmlx.a
 MLX_FLAGS = -L$(MLX_DIR) -lmlx -framework OpenGL -framework AppKit
 else ifeq ($(UNAME_S), Linux)
@@ -52,6 +52,7 @@ MLX_LIB = $(MLX_DIR)/libmlx.a
 MLX_FLAGS = -L$(MLX_DIR) -lmlx -lXext -lX11 -lm
 endif
 # ifeq = if equal
+# only linux need -lm bcos macOS's math library is bundled into libSystem.dylib which is always linked automatically
 
 # ----- Rules -----
 all: $(NAME)
