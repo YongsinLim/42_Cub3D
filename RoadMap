@@ -1,0 +1,16 @@
+RoadMap - 18.05.2026:
+1. Upload Libft
+2. Makefile - Done
+3. Header file - declare 3 struct (t_game, t_texture, t_player)
+
+RoadMap - 20.05.2026:
+1. Upload MinilibX-MacOS version
+2. Revise Makefile - MinilibX version
+3. Header file - add library
+4. Upload To-Do and Notes file
+
+RoadMap - 21.05.2026:
+1. Open file to get and store map data after validate the map line's character
+2. Validate and store map element's path (NO, SO, EA, WE, F & C)
+3. Convert ceiling and floor RGB colour into one integer
+4. Validate file extension (.cub)

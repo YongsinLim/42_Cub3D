@@ -6,7 +6,7 @@
 /*   By: yolim <yolim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 16:35:22 by yolim             #+#    #+#             */
-/*   Updated: 2026/05/20 13:44:20 by yolim            ###   ########.fr       */
+/*   Updated: 2026/05/21 22:59:53 by yolim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 
 
 typedef struct s_texture {
+    char    *path;
     void    *img;   // ← this is ONE WALL TEXTURE image
     char    *addr;  // ← pixel memory of THAT TEXTURE
     int     bpp;    // ← texture's bits per pixel
@@ -70,6 +71,24 @@ typedef struct s_game {
 
 
 
+
+
+
+// ----- Parse Utils -----
+void    check_file_extension(char *path);
+
+// ----- Parse Map -----
+int     count_file_lines(char *path);
+char    **read_file(char *path);
+int     is_map_line(char *line);
+
+// ----- Parse Element -----
+void    parse_element(t_game *game, char *line);
+void    validate_elements(t_game *game);
+int     parse_rgb(char *str);
+
+// ----- Report Error Functions -----
+void    error_exit(char *msg);
 
 
 

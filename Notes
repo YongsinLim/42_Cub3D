@@ -2,3 +2,34 @@ t_player struct declare using double bcos:
 1. double is what the math library (-lm) returns by default. sin(), cos(), sqrt() all return double. If you store results in float, you're immediately throwing away half the precision the function just calculated.
 2. Your map is a grid of integers — cell [2][3] is just a wall or empty. But the player doesn't live on a grid. They live between cells, moving smoothly through the world. If you used int, your player could only stand at exact grid corners — movement would be jerky and teleporting, like moving one whole cell at a time.
 
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+explain bit shifting : return (r << 16 | g << 8 | b)
+in binary (base 2):
+  5 in binary = 00000101
+
+  5 << 1  = 00001010  = 10   (shifted left 1 place, × 2)
+  5 << 2  = 00010100  = 20   (shifted left 2 places, × 4)
+  5 << 3  = 00101000  = 40   (shifted left 3 places, × 8)
+
+RGB example:
+  r = 220
+  220 << 16 means:
+
+  before: 00000000 00000000 11011100   (220)
+  after:  11011100 00000000 00000000   (220 << 16)
+
+why use | ?
+| (bitwise OR) combines the three values into one without them interfering with each other.
+
+  Since each color occupies a different slot, their bits never overlap:
+  r << 16:  11011100 00000000 00000000
+  g << 8:   00000000 01100100 00000000
+  b:        00000000 00000000 00000000
+
+  OR:       11011100 01100100 00000000
+                R        G       B
+
+  OR works here because wherever one value has a 1, the others have 0 in that same position — so combining them just fills in each slot.
+
+--------------------------------------------------------------------------------------------------------------------------------------------
