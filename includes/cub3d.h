@@ -6,7 +6,7 @@
 /*   By: yolim <yolim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 16:35:22 by yolim             #+#    #+#             */
-/*   Updated: 2026/05/21 22:59:53 by yolim            ###   ########.fr       */
+/*   Updated: 2026/05/28 20:57:46 by yolim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,13 +71,14 @@ typedef struct s_game {
 
 
 
-
-
+// ----- Parse Map -----
+int     is_element_line(char *line);
+int     find_map_start(char **lines);
+void    parse_map(t_game *game, char **lines, int start);
+void    find_map_cols(t_game *game);
 
 // ----- Parse Utils -----
 void    check_file_extension(char *path);
-
-// ----- Parse Map -----
 int     count_file_lines(char *path);
 char    **read_file(char *path);
 int     is_map_line(char *line);

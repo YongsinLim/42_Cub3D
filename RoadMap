@@ -14,3 +14,8 @@ RoadMap - 21.05.2026:
 2. Validate and store map element's path (NO, SO, EA, WE, F & C)
 3. Convert ceiling and floor RGB colour into one integer
 4. Validate file extension (.cub)
+
+RoadMap - 28.05.2026:
+1. Find index for map starting by checking whether is_element_line or not
+2. Parsing map data into t_game struct
+3. Update map_columns

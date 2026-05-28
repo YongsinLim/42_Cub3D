@@ -6,59 +6,74 @@
 /*   By: yolim <yolim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/20 12:36:24 by yolim             #+#    #+#             */
-/*   Updated: 2026/05/21 23:01:11 by yolim            ###   ########.fr       */
+/*   Updated: 2026/05/28 20:59:24 by yolim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
-int count_file_lines(char *path) {
-    int     fd;
-    int     count;
-    char    *line;
-
-    fd = open(path, O_RDONLY);
-    if (fd < 0)
-        error_exit("Cannot open file");
-    count = 0;
-    while ((line = get_next_line(fd)) != NULL) {
-        free(line);
-        count++;
-    }
-    close(fd);
-    return (count);
+int is_element_line(char *line) {
+    return (ft_strncmp(line, "NO ", 3) == 0
+        || ft_strncmp(line, "SO ", 3) == 0
+        || ft_strncmp(line, "WE ", 3) == 0
+        || ft_strncmp(line, "EA ", 3) == 0
+        || ft_strncmp(line, "F ", 2) == 0
+        || ft_strncmp(line, "C ", 2) == 0);
 }
 
-// read every line into a char** array
-char    **read_file(char *path) {
-    int     fd;
-    char    **lines_array;
-    char    *line;
-    int     i;
-
-    lines_array = malloc(sizeof(char *) * (count_file_lines(path) + 1));
-    if (!lines_array)
-        return (NULL);
-    fd = open(path, O_RDONLY);
-    if (fd < 0)
-        error_exit("Cannot open file");
-    i = 0;
-    while ((line = get_next_line(fd)) != NULL) {
-        lines_array[i] = line;
-        i++;
-    }
-    lines_array[i] = NULL;
-    close(fd);
-    return (lines_array);
-}
-
-// identify which lines are direction elements vs map's line character
-int is_map_line(char *line) {
+// Find where the map starts in the lines array, map is always after all elements
+int find_map_start(char **lines) {
     int i;
+    int found_element;
 
     i = 0;
-    while (line[i] == ' ')
+    found_element = 0;
+    while (lines[i]) {
+        if (is_element_line(lines[i]))
+            found_element = 1;
+        if (found_element && is_map_line(lines[i]) && !is_element_line(lines[i])) // map starts after elements + empty lines
+            return (i);
         i++;
-    return (line[i] == '1' || line[i] == '0' || line[i] == 'N' || line[i] == 'S'
-        || line[i] == 'E' || line[i] == 'W');
+    }
+    error_exit("No map found in file");
+    return (-1);
+}
+
+// Read map rows into game->map (char**)
+void    parse_map(t_game *game, char **lines, int start) {
+    int i;
+    int row;
+
+    i = start;
+    row = 0;
+    while (lines[i] && is_map_line(lines[i])) {
+        i++;
+        row++;
+    }
+    game->map_rows = row;
+    game->map = malloc(sizeof(char *) * (row + 1));
+    if (!game->map)
+        error_exit("Malloc failed");
+    i = 0;
+    while (i < row) {
+        game->map[i] = ft_strtrim(lines[start + i], "\n");
+        i++;
+    }
+    game->map[i] = NULL;
+}
+
+// Find map_cols — widest row
+void find_map_cols(t_game *game) {
+    int i;
+    int length;
+
+    i = 0;
+    length = 0;
+    game->map_cols = 0;
+    while (game->map[i]) {
+        length = ft_strlen(game->map[i]);
+        if (length > game->map_cols)
+            game->map_cols = length;
+        i++;
+    }
 }
