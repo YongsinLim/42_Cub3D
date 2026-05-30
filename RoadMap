@@ -19,3 +19,8 @@ RoadMap - 28.05.2026:
 1. Find index for map starting by checking whether is_element_line or not
 2. Parsing map data into t_game struct
 3. Update map_columns
+
+RoadMap - 30.05.2026:
+1. Find player starting position and facing direction
+2. Set player direction and camera plane
+3. Fix norm

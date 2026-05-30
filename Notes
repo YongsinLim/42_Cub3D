@@ -33,3 +33,274 @@ why use | ?
   OR works here because wherever one value has a 1, the others have 0 in that same position — so combining them just fills in each slot.
 
 --------------------------------------------------------------------------------------------------------------------------------------------
+
+Reason of setting player.pos_x = c + 0.5 and game->player.pos_y = r + 0.5 :
+
+The map is a grid where each cell is 1.0 unit wide. Column c and row r are integer indices
+   pointing to the top-left corner of that cell.
+
+  col:  0         1         2
+        |---------|---------|---------|
+  row 0 |         |         |         |
+        |    +    |         |         |   ← + is (0.5, 0.5) = center of cell [0][0]
+        |         |         |         |
+        |---------|---------|---------|
+  row 1 |         |    N    |         |
+        |         |    +    |         |   ← N found at c=1, r=1 → player placed at (1.5,
+  1.5)
+        |         |         |         |
+        |---------|---------|---------|
+
+  If you used c and r directly, the player would be at the corner of the cell — right on the
+   wall boundary. The raycaster's collision detection uses the fractional part of the
+  position to determine where inside a cell the player is, and being exactly on a
+  corner/edge causes undefined wall-hit behaviour.
+
+  + 0.5 shifts the player to the center of the cell, which is:
+  - Safe distance from all 4 surrounding walls
+  - A predictable, symmetrical starting point for raycasting in all directions
+  - Consistent with how every other position in the raycaster is interpreted (e.g.,
+  floor(pos_x) gives the current cell column)
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+After finding the player spawn tile (N/S/E/W), you replace it with '0' because:
+
+The raycaster only understands '0' and '1' — empty floor or wall. N/S/E/W are not valid
+  tiles for rendering or collision detection.
+
+  If you leave 'N' in the map, later when the raycaster hits that cell it won't know what to
+   do with it — it's neither a wall ('1') nor walkable floor ('0').
+
+  The player's position and direction are already saved into game->player before the
+  replacement, so the information isn't lost — it just gets "consumed" from the map.
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+why dir_y increase downward, if North should be 1 right , follow the xy coordinate?
+
+⏺ You're right that in standard math, North = (0, 1). But the map is stored as a 2D array
+  where row 0 is the top:
+
+  map[0]   "11111"   ← row 0, top of map
+  map[1]   "1N001"   ← row 1, player here
+  map[2]   "10001"
+  map[3]   "11111"   ← row 3, bottom of map
+
+  To move North (up the screen), you go to a smaller row index — r - 1. That means dir_y =
+  -1.
+
+  screen/array coordinates    vs    math coordinates
+
+  row 0  ──── top                      ↑ y=+1
+  row 1                                |
+  row 2                                |
+  row 3  ──── bottom          y=-1 ────+──── y=+1
+                                       |
+  y increases DOWNWARD          y=-1 (down)
+
+  So dir_y = -1 for North is correct because your map is indexed top-to-bottom, not because
+  of math convention. The raycaster follows the array's coordinate system, not the math one.
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+The camera plane concept
+
+  The player has a direction vector and in front of them is a virtual flat screen — the
+  camera plane — perpendicular to it:
+
+                   camera plane (width = 2 × 0.66 = 1.32)
+          ◄──────────────────────────────►
+          │                              │
+           \           │dir              /
+            \          │                /
+             \         │               /
+              \        │              /
+               \       │             /
+                \      │            /
+                 \     │           /
+                  \    │          /
+                   \   │         /
+                    [player]
+
+  Each screen column shoots one ray from the player through a point on the camera plane.
+  Left edge of screen = left end of plane, right edge = right end.
+
+  ---
+  How 0.66 gives 66°
+
+  The direction vector has length 1. The plane extends 0.66 on each side. The FOV angle is
+  formed by the leftmost ray and rightmost ray:
+
+           0.66
+      ◄────────
+      │       /
+      │      /
+      │     /  ← half-FOV angle
+    1 │    /
+      │   /
+      │  /
+      │ /
+      [player]
+
+  - adjacent = direction length = 1.0
+  - opposite = plane half-length = 0.66
+
+  tan(half_FOV) = opposite / adjacent = 0.66 / 1.0
+  half_FOV = atan(0.66) = 33.4°
+  full FOV = 33.4° × 2 ≈ 66°
+
+  ---
+  Choosing a different FOV
+
+  You control FOV by changing the plane length:
+
+  ┌──────────────┬──────────────────────────────┐
+  │ plane length │             FOV              │
+  ├──────────────┼──────────────────────────────┤
+  │ 0.66         │ ~66° (default, comfortable)  │
+  ├──────────────┼──────────────────────────────┤
+  │ 1.0          │ 90° (wider, more distortion) │
+  ├──────────────┼──────────────────────────────┤
+  │ 0.41         │ ~45° (narrow, zoom-like)     │
+  └──────────────┴──────────────────────────────┘
+
+  Formula: plane_length = tan(FOV / 2)
+
+  What is full FOV
+
+    FOV = Field of View — the total angle of what the player can see left to right.
+
+             left ray          right ray
+                  \                /
+                   \    66°       /
+                    \◄──────────►/
+                     \    │     /
+                      \   │    /
+               33.4°   \  │   /  33.4°
+                        \ │  /
+                         [player]
+
+    The direction vector splits it into two equal halves:
+    - Left half = atan(0.66) = 33.4°
+    - Right half = atan(0.66) = 33.4°
+    - Total FOV = 66.8° ≈ 66°
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+how to know when plane_x or plane_y is -0.66 or 0.66 for North, East, South and West?
+
+⏺ There's a simple rule: the camera plane always points to the player's right hand.
+
+  facing N (up)   → right hand points East  → plane_x = +0.66
+  facing S (down) → right hand points West  → plane_x = -0.66
+  facing E (right)→ right hand points South → plane_y = +0.66
+  facing W (left) → right hand points North → plane_y = -0.66
+
+  ---
+  The formula
+
+  Rotate the direction vector 90° clockwise to get the plane direction:
+
+  plane = (-dir_y, dir_x) × 0.66
+
+  Verify all 4:
+
+  ┌───────────┬────────┬───────┬──────────────┐
+  │    dir    │ -dir_y │ dir_x │    plane     │
+  ├───────────┼────────┼───────┼──────────────┤
+  │ N (0,-1)  │ 1      │ 0     │ (0.66, 0) ✓  │
+  ├───────────┼────────┼───────┼──────────────┤
+  │ S (0, 1)  │ -1     │ 0     │ (-0.66, 0) ✓ │
+  ├───────────┼────────┼───────┼──────────────┤
+  │ E (1, 0)  │ 0      │ 1     │ (0, 0.66) ✓  │
+  ├───────────┼────────┼───────┼──────────────┤
+  │ W (-1, 0) │ 0      │ -1    │ (0, -0.66) ✓ │
+  └───────────┴────────┴───────┴──────────────┘
+
+  So you never need to memorise the signs — just apply the formula to whatever direction
+  vector you have.
+
+why camera plane always points to the player's right hand?
+
+⏺ It's a convention choice — it decides which side of the screen is "left" and which is
+  "right."
+
+  In the raycaster, rays are cast using:
+  ray = dir + plane * camera_x
+
+  Where camera_x goes from -1 (left edge of screen) to +1 (right edge of screen).
+
+  If plane points to the right hand:
+  - camera_x = -1 → ray goes left ✅
+  - camera_x = +1 → ray goes right ✅
+
+  If you flipped the plane to point left hand:
+  - camera_x = -1 → ray goes right ❌  (screen is mirrored)
+  - camera_x = +1 → ray goes left ❌
+
+  ---
+  So the rule isn't physics — it's just making sure negative camera_x = left side of screen
+  matches player's actual left. Pointing the plane right hand achieves that consistently for
+   all 4 directions.
+
+explain this   ray = dir + plane * camera_x
+
+  camera_x is a value from -1.0 to +1.0 representing which column of the screen you're
+  casting a ray for:
+
+  screen columns:
+  leftmost                center               rightmost
+  camera_x = -1    camera_x = 0    camera_x = +1
+
+  ---
+  What the formula does
+
+  ray = dir + plane * camera_x
+
+  It shifts the direction vector left or right along the camera plane:
+
+  camera_x = 0    → ray = dir + 0        = straight forward
+  camera_x = +1   → ray = dir + plane    = far right
+  camera_x = -1   → ray = dir + (-plane) = far left
+
+  Visually (facing North):
+
+          camera plane
+     ◄────────────────────►
+     │         │           │
+     │         │dir        │
+      \        │          /
+       \       │         /
+        \      │        /
+    left \     │       / right
+    ray   \    │      /  ray
+           \   │     /
+            \ ↑|↑  /
+             [player]
+
+  ---
+  Concrete example (facing North)
+
+  dir   = (0, -1)
+  plane = (0.66, 0)
+
+  For the leftmost screen column (camera_x = -1):
+  ray = (0,-1) + (0.66, 0) * (-1)
+      = (0,-1) + (-0.66, 0)
+      = (-0.66, -1)          ← points up-left ✅
+
+  For the rightmost screen column (camera_x = +1):
+  ray = (0,-1) + (0.66, 0) * (1)
+      = (0,-1) + (0.66, 0)
+      = (0.66, -1)           ← points up-right ✅
+
+  For the center column (camera_x = 0):
+  ray = (0,-1) + (0.66, 0) * (0)
+      = (0,-1)               ← straight forward ✅
+
+  Each screen column gets a slightly different ray direction, which is what creates the 3D
+  perspective effect.
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
