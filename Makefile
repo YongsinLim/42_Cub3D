@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: yolim <yolim@student.42kl.edu.my>          +#+  +:+       +#+         #
+#    By: jenlee <jenlee@studekl.edu.my>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/05/18 23:41:47 by yolim             #+#    #+#              #
-#    Updated: 2026/05/18 23:41:49 by yolim            ###   ########.fr        #
+#    Updated: 2026/06/11 15:51:39 by jenlee           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ SRC_DIR = src
 OBJ_DIR = obj
 
 # ----- Header file -----
-HEADER_LIB = $(HEADER_DIR)/cub3D.h
+HEADER_LIB = $(HEADER_DIR)/cub3d.h
 
 # ----- Source Files -----
 SRC = $(shell find src -name "*.c")	#  need to change after all done!

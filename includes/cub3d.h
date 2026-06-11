@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yolim <yolim@student.42kl.edu.my>          +#+  +:+       +#+        */
+/*   By: jenlee <jenlee@studekl.edu.my>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 16:35:22 by yolim             #+#    #+#             */
-/*   Updated: 2026/05/30 13:35:25 by yolim            ###   ########.fr       */
+/*   Updated: 2026/06/11 16:12:12 by jenlee           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,13 @@
 # include <math.h>	// for all functions of the math library
 # include "../Libft/libft.h"
 
-
 // pending for minilibx header file!
+#include "../minilibx_macos_opengl/mlx.h"
+#include "../minilibx-linux/mlx.h"
 
+
+#define SCREEN_WIDTH 800
+#define SCREEN_HEIGHT 600
 
 typedef struct s_texture
 {
@@ -48,6 +52,26 @@ typedef struct s_player
 	double	plane_y;
 }			t_player;
 
+typedef struct s_ray {
+    double  camera_x;
+    double  ray_dir_x;
+    double  ray_dir_y;
+    int     map_x;
+    int     map_y;
+    double  side_dist_x;
+    double  side_dist_y;
+    double  delta_dist_x;
+    double  delta_dist_y;
+    double  perp_wall_dist;
+    int     step_x;
+    int     step_y;
+    int     hit;
+    int     side;       // 0 for NS, 1 for EW
+    int     line_height;
+    int     draw_start;
+    int     draw_end;
+}               t_ray;
+
 typedef struct s_game
 {
 	void		*mlx;	// ← this is the SCREEN buffer
@@ -67,10 +91,8 @@ typedef struct s_game
 	int			ceiling_colour;
 
 	t_player	player;
+	t_ray       ray;
 }				t_game;
-
-
-
 
 
 
@@ -98,6 +120,19 @@ void	set_player_direction(t_player *player, char dir);
 
 // ----- Report Error Functions -----
 void	error_exit(char *msg);
+
+// ------Initialising rendering------- //
+void draw_floor_and_ceiling(t_game *game);
+int render_frame(t_game *game);
+void init_render(t_game *game);
+void  my_mlx_pixel_put(t_game *game, int x, int y, int color);
+
+// --------Raycasting```````````````````//
+void raycast_walls(t_game *game);
+
+// --------Mlx Hooks-------------//
+int key_press(int keycode, t_game *game);
+int close_window(t_game *game);
 
 
 
