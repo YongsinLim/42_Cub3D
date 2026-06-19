@@ -6,21 +6,30 @@
 /*   By: jenlee <jenlee@studekl.edu.my>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/11 16:10:39 by jenlee            #+#    #+#             */
-/*   Updated: 2026/06/19 18:48:10 by yolim            ###   ########.fr       */
+/*   Updated: 2026/06/19 22:10:06 by yolim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 #include <math.h>
 
-// Linux X11 Keycodes
-#define KEY_ESC 65307
-#define KEY_W 119
-#define KEY_A 97
-#define KEY_S 115
-#define KEY_D 100
-#define KEY_LEFT 65361
-#define KEY_RIGHT 65363
+#ifdef __linux__
+# define KEY_ESC	65307
+# define KEY_W		119
+# define KEY_A		97
+# define KEY_S		115
+# define KEY_D		100
+# define KEY_LEFT	65361
+# define KEY_RIGHT	65363
+#else
+# define KEY_ESC	53
+# define KEY_W		13
+# define KEY_A		0
+# define KEY_S		1
+# define KEY_D		2
+# define KEY_LEFT	123
+# define KEY_RIGHT	124
+#endif
 
 static void move_player(t_game *game, double move_x, double move_y)
 {
@@ -67,7 +76,7 @@ int	key_press(int keycode, t_game *game)
 	move_speed = 0.5;
 	rot_speed = 0.1;
 	if (keycode == KEY_ESC)
-		error_exit("Clean exit"); // Use your existing exit function
+		close_window(game);
 	if (keycode == KEY_W)
 		move_player(game, game->player.dir_x * move_speed,
 			game->player.dir_y * move_speed);
@@ -90,6 +99,6 @@ int	key_press(int keycode, t_game *game)
 int	close_window(t_game *game)
 {
 	(void)game;
-	error_exit("Window closed");
-	return (0);
+	printf("Window closed");
+	exit(0);
 }

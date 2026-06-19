@@ -6,7 +6,7 @@
 /*   By: jenlee <jenlee@studekl.edu.my>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/11 15:37:21 by jenlee            #+#    #+#             */
-/*   Updated: 2026/06/19 18:46:52 by yolim            ###   ########.fr       */
+/*   Updated: 2026/06/19 19:08:05 by yolim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ void	raycast_walls(t_game *game)
 		calc_step_and_side_dist(game);
 		perform_dda(game);
 		// For now, will draw untextured lines to test the math
-		draw_wall_column(game, x);
-		// draw_untextured_line(game, x);
+		// draw_wall_column(game, x);
+		draw_untextured_line(game, x);
 		x++;
 	}
 }
