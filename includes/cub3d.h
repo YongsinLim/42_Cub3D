@@ -6,7 +6,7 @@
 /*   By: yolim <yolim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 16:35:22 by yolim             #+#    #+#             */
-/*   Updated: 2026/05/30 13:35:25 by yolim            ###   ########.fr       */
+/*   Updated: 2026/06/19 22:22:07 by yolim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,7 @@ char	**read_file(char *path);
 int		is_map_line(char *line);
 
 // ----- Parse Element -----
+void	set_if_empty(char *prefix, int position, t_game *game, char *path);
 void	parse_element(t_game *game, char *line);
 void	validate_elements(t_game *game);
 int		parse_rgb(char *str);
