@@ -6,7 +6,7 @@
 /*   By: jenlee <jenlee@studekl.edu.my>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/11 15:37:21 by jenlee            #+#    #+#             */
-/*   Updated: 2026/06/11 15:37:21 by jenlee           ###   ########.fr       */
+/*   Updated: 2026/06/19 18:46:52 by yolim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ void	raycast_walls(t_game *game)
 		calc_step_and_side_dist(game);
 		perform_dda(game);
 		// For now, will draw untextured lines to test the math
-		// draw_wall_column(game, x); 
-		draw_untextured_line(game, x);
+		draw_wall_column(game, x);
+		// draw_untextured_line(game, x);
 		x++;
 	}
 }
@@ -99,16 +99,8 @@ void	perform_dda(t_game *game)
 			game->ray.map_y += game->ray.step_y;
 			game->ray.side = 1; // 1 means we hit a North/South wall
 		}
-		// Temporary Fake Map Boundary for Testing
-		// Pretend there are solid walls at coordinates 0 and 9
-		if (game->ray.map_x <= 0 || game->ray.map_x >= 9
-			|| game->ray.map_y <= 0 || game->ray.map_y >= 9)
-		{
+		if (game->map[game->ray.map_y][game->ray.map_x] == '1')
 			game->ray.hit = 1;
-		}
-		// FUTURE IMPLEMENTATION (Once parsing is done):
-		// if (game->map[game->ray.map_y][game->ray.map_x] == '1')
-		// 	game->ray.hit = 1;
 	}
 }
 
