@@ -6,7 +6,7 @@
 /*   By: yolim <yolim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 16:35:22 by yolim             #+#    #+#             */
-/*   Updated: 2026/05/30 13:35:25 by yolim            ###   ########.fr       */
+/*   Updated: 2026/06/18 18:14:42 by yolim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,27 @@ typedef struct s_player
 	double	plane_y;
 }			t_player;
 
+// Store a grid coordinate (row, column) as one unit.
+typedef struct s_point
+{
+	int	r;
+	int	c;
+}				t_point;
+
+/*
+The queue is just an array with two pointers — head chases tail.
+
+  cells: [ (1,1) | (0,1) | (2,1) | (1,0) | (1,2) | ... ]
+		   ↑ head                                    ↑ tail
+		   next to process                           next empty slot
+*/
+typedef struct s_queue {
+	t_point	*cells;	// array of coordinates waiting to be checked
+	int		head_idx;	// index of next cell to process (front)
+	int		tail_idx;	// index of next empty slot (back)
+	int		capacity;	// max cells the array can hold
+}			t_queue;
+
 typedef struct s_game
 {
 	void		*mlx;	// ← this is the SCREEN buffer
@@ -68,11 +89,6 @@ typedef struct s_game
 
 	t_player	player;
 }				t_game;
-
-
-
-
-
 
 // ----- Parse Map -----
 int		is_element_line(char *line);
@@ -96,13 +112,22 @@ void	find_player(t_game *game);
 int		find_player_start_col_in_row(char *row);
 void	set_player_direction(t_player *player, char dir);
 
+// ----- Map Validation Utils -----
+t_queue *create_queue(int capacity);
+void    enqueue(t_queue *q, int r, int c);
+t_point dequeue(t_queue *q);
+int		is_empty(t_queue *q);
+
+// ----- Map Validation -----
+void	validate_map_chars(t_game *game);
+char	**copy_map(t_game *game);
+int		flood_fill_bfs(char **map, int rows, int max_cols, t_point start);
+void	validate_map_enclosed(t_game *game);
+
+// ----- Parse -----
+void	parse(t_game *game, char *path);
+
 // ----- Report Error Functions -----
 void	error_exit(char *msg);
-
-
-
-
-
-
 
 #endif

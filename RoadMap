@@ -24,3 +24,24 @@ RoadMap - 30.05.2026:
 1. Find player starting position and facing direction
 2. Set player direction and camera plane
 3. Fix norm
+
+RoadMap - 17.06.2026:
+1. Validate every character in map are valid
+2. Prepare a copy map data to be checked whether the map is enclosed
+3. Apply flood_fill logic to check map is enclosed
+4. Validate map closed by walls
+
+RoadMap - 18.06.2026:
+1. Found out there is possibility that using flood_fill will cause stack overflow,
+    so implement Breadth-First Search (BFS) to replace flood_fill logic
+2. BFS logic step:
+    - create a queue
+    -> enqueue player starting points into queue's tail
+    -> loop the queue
+    -> dequeue from the head's point to process
+    -> enqueue the 4 neighbour point to continue checking the map is enclosed
+    -> free the whole queue
+3. Finalise parse function
+4. Add 20 valid and invalid maps each into map folder to test parsing functions
+
+
