@@ -6,7 +6,7 @@
 /*   By: jenlee <jenlee@studekl.edu.my>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/11 16:10:39 by jenlee            #+#    #+#             */
-/*   Updated: 2026/06/11 16:10:39 by jenlee           ###   ########.fr       */
+/*   Updated: 2026/06/19 18:48:10 by yolim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,19 +22,23 @@
 #define KEY_LEFT 65361
 #define KEY_RIGHT 65363
 
-static void	move_player(t_game *game, double move_x, double move_y)
+static void move_player(t_game *game, double move_x, double move_y)
 {
-	double	new_x;
-	double	new_y;
+	double new_x;
+	double new_y;
+	double buffer;
 
 	new_x = game->player.pos_x + move_x;
 	new_y = game->player.pos_y + move_y;
-	// Temporary Collision: Stay inside the 10x10 box (coordinates 1 to 8)
-	if (new_x > 1.1 && new_x < 8.9)
+	buffer = 0.1;
+	if (move_x > 0 && game->map[(int)game->player.pos_y][(int)(new_x + buffer)] != '1')
 		game->player.pos_x = new_x;
-	if (new_y > 1.1 && new_y < 8.9)
+	else if (move_x < 0 && game->map[(int)game->player.pos_y][(int)(new_x - buffer)] != '1')
+		game->player.pos_x = new_x;
+	if (move_y > 0 && game->map[(int)(new_y + buffer)][(int)game->player.pos_x] != '1')
 		game->player.pos_y = new_y;
-	// LATER (Once parsing is done): Check game->map[y][x] != '1' before moving
+	else if (move_y < 0 && game->map[(int)(new_y - buffer)][(int)game->player.pos_x] != '1')
+		game->player.pos_y = new_y;
 }
 
 // Applies the 2D rotation matrix to the player's vectors
