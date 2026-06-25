@@ -6,12 +6,13 @@
 /*   By: jenlee <jenlee@studekl.edu.my>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/11 15:13:08 by jenlee            #+#    #+#             */
-/*   Updated: 2026/06/11 15:13:08 by jenlee           ###   ########.fr       */
+/*   Updated: 2026/06/24 18:44:51 by yolim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
+// uses game->addr to write a colour at position (x, y) on that paper.
 void	my_mlx_pixel_put(t_game *game, int x, int y, int color)
 {
 	char	*dst;
@@ -38,6 +39,7 @@ void	init_render(t_game *game)
 	game->img = mlx_new_image(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
 	game->addr = mlx_get_data_addr(game->img, &game->bpp,
 			&game->line_len, &game->endian);
+	load_textures(game);
 	mlx_loop_hook(game->mlx, render_frame, game);
 	mlx_hook(game->win, 2, 1L << 0, key_press, game);
 	mlx_hook(game->win, 17, 0, close_window, game);

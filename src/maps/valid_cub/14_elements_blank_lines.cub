@@ -1,9 +1,9 @@
-NO ./textures/north.xpm
+NO ./src/textures/north.xpm
 
-SO ./textures/south.xpm
+SO ./src/textures/south.xpm
 
-WE ./textures/west.xpm
-EA ./textures/east.xpm
+WE ./src/textures/west.xpm
+EA ./src/textures/east.xpm
 
 F 100,100,100
 C 200,200,200

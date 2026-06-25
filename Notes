@@ -399,3 +399,147 @@ All 40 maps created. Here's a summary of what each tests:
   ├────────────────────────┼─────────────────────────────┤
   │ 20_empty_file          │ Completely empty file       │
   └────────────────────────┴─────────────────────────────┘
+
+  --------------------------------------------------------------------------------------------------------------------------------------------
+
+  4 files created in src/textures/:
+
+    ┌───────────┬────────┐
+    │   File    │ Colour │
+    ├───────────┼────────┤
+    │ north.xpm │ Red    │
+    ├───────────┼────────┤
+    │ south.xpm │ Yellow │
+    ├───────────┼────────┤
+    │ east.xpm  │ Orange │
+    ├───────────┼────────┤
+    │ west.xpm  │ Green  │
+    └───────────┴────────┘
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+A texture is just another image — but instead of drawing on it, you read colours from it.
+
+  // Screen (you write to this)
+  game->img  = mlx_new_image(...)      // blank paper
+  game->addr = mlx_get_data_addr(...)  // pen to write pixels
+
+  // Texture (you read from this)
+  game->tex[0].img  = mlx_xpm_file_to_image(...)  // load image from file
+  game->tex[0].addr = mlx_get_data_addr(...)       // pointer to read pixels
+
+  The only difference: the screen image is blank (you draw on it every frame), the texture
+  image is pre-loaded from the XPM file (you only read from it).
+
+Parsing → stores the file path string into game->tex[i].path
+  Loading → reads that file from disk into memory (game->tex[i].img + game->tex[i].addr)
+  Rendering → reads pixel colours from game->tex[i].addr and draws them on screen
+
+  parse()         → game->tex[i].path — the file path your parser stored, e.g. "./src/textures/north.xpm"
+  load_textures() → game->tex[0].img  = (image loaded from that file)
+                    game->tex[0].addr = (pointer to pixels of that image)
+  render_frame()  → reads from tex[0].addr, writes to game->addr
+
+  Loading must happen after mlx_init() (because MLX needs to be started first) and before
+  mlx_loop() (because rendering starts there).
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+How to get colour from addr?
+
+mlx_xpm_file_to_image — Loading the image
+
+  Think of your XPM file as a recipe book sitting on a shelf. mlx_xpm_file_to_image picks up
+  that book, reads it, and cooks the actual meal (image) in memory.
+
+  XPM file on disk          →       Image in RAM
+  "./src/textures/north.xpm"  →   game->tex[0].img
+  (recipe book on shelf)      →   (cooked meal in kitchen)
+
+  width and height get filled automatically because MLX reads the first line of the XPM:
+  "64 64 1 1"   ← MLX reads this → width=64, height=64
+
+  ---
+  mlx_get_data_addr — Getting access to pixels
+
+  Once the image is in memory, you need a way to reach individual pixels. Think of the image
+  as a very long corridor of rooms (pixels), each room storing one colour.
+
+  mlx_get_data_addr gives you the key to room 0 (the addr pointer), plus 3 rules to navigate
+  to any room:
+
+  ---
+  bpp — bits per pixel (usually 32)
+
+  Each pixel stores one colour. That colour takes up 32 bits = 4 bytes of memory.
+
+  1 pixel = 4 bytes:
+  [ Alpha ] [ Red ] [ Green ] [ Blue ]
+    1 byte   1 byte   1 byte    1 byte
+
+  So bpp = 32 means every pixel occupies 4 bytes. bpp / 8 = 4 converts to bytes.
+
+  ---
+  line_len — bytes per row
+
+  The image is stored as one long flat array in memory, NOT as a 2D grid. All rows are
+  placed one after another:
+
+  Memory: [row0_pixel0][row0_pixel1]...[row0_pixel63][row1_pixel0][row1_pixel1]...
+
+  line_len tells you how many bytes one full row takes. For a 64px wide texture with 32bpp:
+  line_len = 64 pixels × 4 bytes = 256 bytes per row
+
+  You need this to jump from one row to the next.
+
+  ---
+  endian — byte order
+
+  Each pixel is 4 bytes. endian tells you which byte comes first in memory:
+
+  endian = 0 (little-endian):  [Blue][Green][Red][Alpha]   ← x86 Mac/Linux
+  endian = 1 (big-endian):     [Alpha][Red][Green][Blue]
+
+  MLX handles this for you internally — you usually don't need to worry about it.
+
+  ---
+  How to reach any pixel using these 3 values
+
+  To read the colour of pixel at position (x, y) inside a texture:
+
+  addr  →  start of pixel memory (room 0)
+  + y * line_len  →  skip y rows down
+  + x * (bpp / 8)  →  skip x pixels across
+
+  colour = *(int *)(addr + y * line_len + x * (bpp / 8))
+
+  Visual example for pixel at (2, 1) in a 64px wide texture:
+
+  Row 0: [px0][px1][px2]...[px63]       ← skip this entire row (256 bytes)
+  Row 1: [px0][px1][px2]...[px63]       ← land here, then skip 2 pixels (8 bytes)
+                    ↑
+                read this pixel
+
+  offset = 1 * 256 + 2 * 4 = 264 bytes from start
+  colour = *(int *)(addr + 264)
+
+  ---
+  Comparing screen vs texture
+
+  ┌────────────┬───────────────────────────────┬─────────────────────────┐
+  │            │      Screen (game->addr)      │  Texture (tex[i].addr)  │
+  ├────────────┼───────────────────────────────┼─────────────────────────┤
+  │ Created by │ mlx_new_image                 │ mlx_xpm_file_to_image   │
+  ├────────────┼───────────────────────────────┼─────────────────────────┤
+  │ Purpose    │ You write pixels to it        │ You read pixels from it │
+  ├────────────┼───────────────────────────────┼─────────────────────────┤
+  │ Formula    │ Same y * line_len + x * bpp/8 │ Same formula            │
+  ├────────────┼───────────────────────────────┼─────────────────────────┤
+  │ Updated    │ Every frame                   │ Once at startup         │
+  └────────────┴───────────────────────────────┴─────────────────────────┘
+
+  Both are just flat arrays of pixels in memory — the only difference is read vs write.
+
+ The key insight is: addr is just a flat array, and bpp/line_len are the rules to navigate it.
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
