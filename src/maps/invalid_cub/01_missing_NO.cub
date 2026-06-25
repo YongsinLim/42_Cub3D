@@ -1,6 +1,6 @@
-SO ./textures/south.xpm
-WE ./textures/west.xpm
-EA ./textures/east.xpm
+SO ./src/textures/south.xpm
+WE ./src/textures/west.xpm
+EA ./src/textures/east.xpm
 F 220,100,0
 C 0,100,220
 

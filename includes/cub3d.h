@@ -6,7 +6,7 @@
 /*   By: yolim <yolim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 16:35:22 by yolim             #+#    #+#             */
-/*   Updated: 2026/06/19 22:22:07 by yolim            ###   ########.fr       */
+/*   Updated: 2026/06/24 18:50:07 by yolim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,9 @@ void	validate_map_enclosed(t_game *game);
 
 // ----- Parse -----
 void	parse(t_game *game, char *path);
+
+// ----- Texture -----
+void	load_textures(t_game *game);
 
 // ----- Report Error Functions -----
 void	error_exit(char *msg);

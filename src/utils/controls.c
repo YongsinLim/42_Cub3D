@@ -31,7 +31,7 @@
 # define KEY_RIGHT	124
 #endif
 
-static void move_player(t_game *game, double move_x, double move_y)
+static void	move_player(t_game *game, double move_x, double move_y)
 {
 	double new_x;
 	double new_y;
