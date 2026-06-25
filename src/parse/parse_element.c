@@ -6,17 +6,18 @@
 /*   By: yolim <yolim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/20 12:35:51 by yolim             #+#    #+#             */
-/*   Updated: 2026/06/19 21:42:44 by yolim            ###   ########.fr       */
+/*   Updated: 2026/06/19 22:30:29 by yolim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
-void set_if_empty(char *prefix, int position, t_game *game, char *path)
+void	set_if_empty(char *prefix, int position, t_game *game, char *path)
 {
-	char msg[64];
+	char	msg[64];
 
-	if (game->tex[position].path) {
+	if (game->tex[position].path)
+	{
 		ft_strlcpy(msg, "Duplicate ", sizeof(msg));
 		ft_strlcat(msg, prefix, sizeof(msg));
 		error_exit(msg);

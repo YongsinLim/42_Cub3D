@@ -6,7 +6,7 @@
 /*   By: yolim <yolim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/30 12:10:54 by yolim             #+#    #+#             */
-/*   Updated: 2026/06/18 12:38:49 by yolim            ###   ########.fr       */
+/*   Updated: 2026/06/25 11:38:54 by yolim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	flood_fill_bfs(char **map, int rows, int max_cols, t_point start)
 	t_point	cur;
 	int		leaked;
 
-	q = create_queue(rows * max_cols * 4);	// create queue big enough for all cells
+	q = create_queue(rows * max_cols * 4); // create queue big enough for all cells
 	leaked = 0;
 	enqueue(q, start.r, start.c);
 	while (!is_empty(q))
@@ -75,7 +75,8 @@ int	flood_fill_bfs(char **map, int rows, int max_cols, t_point start)
 			break ;
 		}
 		if (map[cur.r][cur.c] == 'V' || map[cur.r][cur.c] == '1')
-			continue ; // wall or already visited = stop
+			continue ;
+			// wall or already visited = stop
 		map[cur.r][cur.c] = 'V'; // mark visited
 		enqueue(q, cur.r - 1, cur.c);
 		enqueue(q, cur.r + 1, cur.c);
