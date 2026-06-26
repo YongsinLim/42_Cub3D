@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yolim <yolim@student.42kl.edu.my>          +#+  +:+       +#+        */
+/*   By: jenlee <jenlee@studekl.edu.my>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 16:35:22 by yolim             #+#    #+#             */
-/*   Updated: 2026/06/24 18:50:07 by yolim            ###   ########.fr       */
+/*   Updated: 2026/06/26 16:13:43 by jenlee           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,7 +168,10 @@ void init_render(t_game *game);
 void  my_mlx_pixel_put(t_game *game, int x, int y, int color);
 
 // --------Raycasting```````````````````//
-void raycast_walls(t_game *game);
+void 			raycast_walls(t_game *game);
+unsigned int	get_tex_color(t_texture *tex, int x, int y);
+int				get_tex_idx(t_game *game);
+void			draw_wall_column(t_game *game, int x);
 
 // --------Mlx Hooks-------------//
 int key_press(int keycode, t_game *game);

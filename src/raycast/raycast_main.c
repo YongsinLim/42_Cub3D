@@ -14,7 +14,7 @@
 
 void	init_ray_vars(t_game *game, int x);
 void	calc_step_and_side_dist(t_game *game);
-void	draw_untextured_line(t_game *game, int x);
+void	calc_wall_projection(t_game *game);
 void	perform_dda(t_game *game);
 
 void	raycast_walls(t_game *game)
@@ -27,9 +27,9 @@ void	raycast_walls(t_game *game)
 		init_ray_vars(game, x);
 		calc_step_and_side_dist(game);
 		perform_dda(game);
-		// For now, will draw untextured lines to test the math
-		// draw_wall_column(game, x);
-		draw_untextured_line(game, x);
+		calc_wall_projection(game);
+		draw_wall_column(game, x);
+		//draw_untextured_line(game, x);
 		x++;
 	}
 }
@@ -104,48 +104,21 @@ void	perform_dda(t_game *game)
 	}
 }
 
-void	draw_untextured_line(t_game *game, int x)
+void calc_wall_projection(t_game *game)
 {
-	int	color;
-	int	y;
-
-	// 1. Calculate distance projected on camera direction
-	if (game->ray.side == 0)
-		game->ray.perp_wall_dist = (game->ray.side_dist_x - game->ray.delta_dist_x);
-	else
-		game->ray.perp_wall_dist = (game->ray.side_dist_y - game->ray.delta_dist_y);
-	// Prevent divide by zero if player is literally inside a wall
-	if (game->ray.perp_wall_dist == 0)
-		game->ray.perp_wall_dist = 0.01;
-	// 2. Calculate height of line to draw on screen
-	game->ray.line_height = (int)(SCREEN_HEIGHT / game->ray.perp_wall_dist);
-	// 3. Calculate lowest and highest pixel to fill in current stripe
-	game->ray.draw_start = -game->ray.line_height / 2 + SCREEN_HEIGHT / 2;
-	if (game->ray.draw_start < 0)
-		game->ray.draw_start = 0;
-	game->ray.draw_end = game->ray.line_height / 2 + SCREEN_HEIGHT / 2;
-	if (game->ray.draw_end >= SCREEN_HEIGHT)
-		game->ray.draw_end = SCREEN_HEIGHT - 1;
-	// 4. Choose a solid color depending on orientation (N, S, E, W)
-	if (game->ray.side == 0)
-	{
-		if (game->ray.ray_dir_x > 0)
-			color = 0x00FF0000; // Red (West face)
-		else
-			color = 0x0000FF00; // Green (East face)
-	}
-	else
-	{
-		if (game->ray.ray_dir_y > 0)
-			color = 0x000000FF; // Blue (North face)
-		else
-			color = 0x00FFFF00; // Yellow (South face)
-	}
-	// 5. Draw the vertical line column
-	y = game->ray.draw_start;
-	while (y <= game->ray.draw_end)
-	{
-		my_mlx_pixel_put(game, x, y, color);
-		y++;
-	}
+    if (game->ray.side == 0)
+        game->ray.perp_wall_dist = (game->ray.side_dist_x - game->ray.delta_dist_x);
+    else
+        game->ray.perp_wall_dist = (game->ray.side_dist_y - game->ray.delta_dist_y);
+    if (game->ray.perp_wall_dist == 0)
+        game->ray.perp_wall_dist = 0.01;
+    game->ray.line_height = (int)(SCREEN_HEIGHT / game->ray.perp_wall_dist);
+    game->ray.draw_start = -game->ray.line_height / 2 + SCREEN_HEIGHT / 2;
+    if (game->ray.draw_start < 0)
+        game->ray.draw_start = 0;
+    game->ray.draw_end = game->ray.line_height / 2 + SCREEN_HEIGHT / 2;
+    if (game->ray.draw_end >= SCREEN_HEIGHT)
+        game->ray.draw_end = SCREEN_HEIGHT - 1;
 }
+
+
