@@ -1,0 +1,43 @@
+<?xpacket begin="" id="W5M0MpCehiHzreSzNTczkc9d"?>
+<x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Mario Icon XMP 1.0">
+  <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <rdf:Description rdf:about=""
+      xmlns:dc="http://purl.org/dc/elements/1.1/"
+      xmlns:xmp="http://ns.adobe.com/xap/1.0/"
+      xmlns:icon="http://ns.example.com/icon/1.0/">
+      <dc:title><rdf:Alt><rdf:li xml:lang="x-default">Mario Lucky Block</rdf:li></rdf:Alt></dc:title>
+      <dc:description><rdf:Alt><rdf:li xml:lang="x-default">Super Mario Bros Mario Lucky Block Icon for cub3d project</rdf:li></rdf:Alt></dc:description>
+      <dc:subject>
+        <rdf:Bag>
+          <rdf:li>Mario</rdf:li>
+          <rdf:li>cub3d</rdf:li>
+          <rdf:li>42school</rdf:li>
+          <rdf:li>LuckyBlock</rdf:li>
+          <rdf:li>Icon</rdf:li>
+          <rdf:li>XPM</rdf:li>
+        </rdf:Bag>
+      </dc:subject>
+      <xmp:CreatorTool>Mario Icon Generator for 42 cub3d</xmp:CreatorTool>
+      <xmp:MetadataDate>2026-06-26</xmp:MetadataDate>
+      <icon:type>LuckyBlock</icon:type>
+      <icon:series>SuperMarioBros</icon:series>
+      <icon:project>42school-cub3d</icon:project>
+      <icon:svgData><![CDATA[<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 172 168" width="172" height="168">
+  <rect x="2" y="2" width="168" height="164" rx="24" fill="#3B1A00"/>
+  <rect x="7" y="7" width="158" height="154" rx="20" fill="#DFA010"/>
+  <rect x="17" y="17" width="138" height="134" rx="16" fill="#EEBC22"/>
+  <rect x="19" y="19" width="134" height="28" rx="12" fill="#FFD84A" opacity="0.45"/>
+  <rect x="7" y="7" width="158" height="154" rx="20" fill="none" stroke="#3B1A00" stroke-width="7.5"/>
+  <circle cx="30" cy="30" r="7" fill="#B07010" stroke="#3B1A00" stroke-width="3.5"/>
+  <circle cx="142" cy="30" r="7" fill="#B07010" stroke="#3B1A00" stroke-width="3.5"/>
+  <circle cx="30" cy="142" r="7" fill="#B07010" stroke="#3B1A00" stroke-width="3.5"/>
+  <circle cx="142" cy="142" r="7" fill="#B07010" stroke="#3B1A00" stroke-width="3.5"/>
+  <path d="M60,96 Q58,60 82,52 Q108,44 116,66 Q122,82 96,96 L96,112" stroke="#C08010" stroke-width="28" fill="none" stroke-linecap="round"/>
+  <circle cx="96" cy="130" r="14" fill="#C08010"/>
+  <path d="M60,96 Q58,60 82,52 Q108,44 116,66 Q122,82 96,96 L96,112" stroke="white" stroke-width="20" fill="none" stroke-linecap="round"/>
+  <circle cx="96" cy="130" r="11" fill="white"/>
+</svg>]]></icon:svgData>
+    </rdf:Description>
+  </rdf:RDF>
+</x:xmpmeta>
+<?xpacket end="w"?>

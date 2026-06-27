@@ -1,0 +1,44 @@
+<?xpacket begin="" id="W5M0MpCehiHzreSzNTczkc9d"?>
+<x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Mario Icon XMP 1.0">
+  <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <rdf:Description rdf:about=""
+      xmlns:dc="http://purl.org/dc/elements/1.1/"
+      xmlns:xmp="http://ns.adobe.com/xap/1.0/"
+      xmlns:icon="http://ns.example.com/icon/1.0/">
+      <dc:title><rdf:Alt><rdf:li xml:lang="x-default">Mario Super Mushroom</rdf:li></rdf:Alt></dc:title>
+      <dc:description><rdf:Alt><rdf:li xml:lang="x-default">Super Mario Bros Mario Super Mushroom Icon for cub3d project</rdf:li></rdf:Alt></dc:description>
+      <dc:subject>
+        <rdf:Bag>
+          <rdf:li>Mario</rdf:li>
+          <rdf:li>cub3d</rdf:li>
+          <rdf:li>42school</rdf:li>
+          <rdf:li>SuperMushroom</rdf:li>
+          <rdf:li>Icon</rdf:li>
+          <rdf:li>XPM</rdf:li>
+        </rdf:Bag>
+      </dc:subject>
+      <xmp:CreatorTool>Mario Icon Generator for 42 cub3d</xmp:CreatorTool>
+      <xmp:MetadataDate>2026-06-26</xmp:MetadataDate>
+      <icon:type>SuperMushroom</icon:type>
+      <icon:series>SuperMarioBros</icon:series>
+      <icon:project>42school-cub3d</icon:project>
+      <icon:svgData><![CDATA[<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 270" width="320" height="270">
+  <path d="M22,125 Q18,18 155,14 Q292,18 288,125 Q290,185 255,218 Q215,248 155,248 Q95,248 55,218 Q20,185 22,125 Z" fill="#3B1A00" transform="translate(5,7)"/>
+  <path d="M22,125 Q18,18 155,14 Q292,18 288,125 Q290,185 255,218 Q215,248 155,248 Q95,248 55,218 Q20,185 22,125 Z" fill="#D42222"/>
+  <ellipse cx="155" cy="80" rx="110" ry="75" fill="#E03030" opacity="0.35"/>
+  <ellipse cx="95" cy="58" rx="42" ry="26" fill="#FF5555" opacity="0.35" transform="rotate(-22,95,58)"/>
+  <path d="M22,125 Q18,18 155,14 Q292,18 288,125 Q290,185 255,218 Q215,248 155,248 Q95,248 55,218 Q20,185 22,125 Z" fill="none" stroke="#3B1A00" stroke-width="8" stroke-linejoin="round"/>
+  <circle cx="208" cy="78" r="56" fill="white"/>
+  <rect x="45" y="170" width="220" height="104" rx="44" fill="#F5E0C4"/>
+  <rect x="45" y="170" width="220" height="104" rx="44" fill="none" stroke="#3B1A00" stroke-width="7.5"/>
+  <rect x="103" y="194" width="17" height="23" rx="7.5" fill="#1C0A00"/>
+  <rect x="190" y="194" width="17" height="23" rx="7.5" fill="#1C0A00"/>
+  <circle cx="106" cy="197" r="4" fill="white"/>
+  <circle cx="193" cy="197" r="4" fill="white"/>
+  <ellipse cx="83" cy="222" rx="17" ry="10" fill="#FFB3C8" opacity="0.9"/>
+  <ellipse cx="227" cy="222" rx="17" ry="10" fill="#FFB3C8" opacity="0.9"/>
+</svg>]]></icon:svgData>
+    </rdf:Description>
+  </rdf:RDF>
+</x:xmpmeta>
+<?xpacket end="w"?>
