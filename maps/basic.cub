@@ -4,7 +4,7 @@ SO ./src/textures/xpm/mario_lucky_block.xpm
 WE ./src/textures/xpm/mario_mushroom.xpm
 EA ./src/textures/xpm/mario_star.xpm
 F 184,113,39
-C 135,206,235s
+C 135,206,235
 
 
         1111111111111111111111111
