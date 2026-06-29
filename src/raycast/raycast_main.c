@@ -99,6 +99,10 @@ void	perform_dda(t_game *game)
 			game->ray.map_y += game->ray.step_y;
 			game->ray.side = 1; // 1 means we hit a North/South wall
 		}
+		if (game->ray.map_y < 0 || game->ray.map_y >= game->map_rows
+			|| game->ray.map_x < 0
+			|| game->ray.map_x >= (int)ft_strlen(game->map[game->ray.map_y]))
+			break ;
 		if (game->map[game->ray.map_y][game->ray.map_x] == '1')
 			game->ray.hit = 1;
 	}

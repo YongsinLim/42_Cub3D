@@ -53,8 +53,8 @@ void	draw_wall_column(t_game *game, int x)
 			* game->ray.ray_dir_x;
 	wall_x -= floor(wall_x);
 	tex_x = (int)(wall_x * (double)tex->width);
-	if ((game->ray.side == 0 && game->ray.ray_dir_x > 0)
-		|| (game->ray.side == 1 && game->ray.ray_dir_y < 0))
+	if ((game->ray.side == 0 && game->ray.ray_dir_x < 0)
+		|| (game->ray.side == 1 && game->ray.ray_dir_y > 0))
 		tex_x = tex->width - tex_x - 1;
 	step = 1.0 * tex->height / game->ray.line_height;
 	tex_pos = (game->ray.draw_start - SCREEN_HEIGHT / 2
