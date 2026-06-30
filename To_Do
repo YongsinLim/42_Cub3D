@@ -7,4 +7,6 @@ To_Do :
 5. add linux and macOS version to make LIBFT.a
 6. create more larger complex map to test the program
 7. fix norm
-8. check valgrind
+8. check valgrind in campus
+9. invalid map 14, 16, 20 wrong error message
+10. valify space valid in map content tak?
