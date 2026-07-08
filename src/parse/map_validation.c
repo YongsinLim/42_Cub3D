@@ -6,7 +6,7 @@
 /*   By: yolim <yolim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/30 12:10:54 by yolim             #+#    #+#             */
-/*   Updated: 2026/06/25 11:38:54 by yolim            ###   ########.fr       */
+/*   Updated: 2026/07/08 15:35:26 by yolim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,22 +62,18 @@ int	flood_fill_bfs(char **map, int rows, int max_cols, t_point start)
 	t_point	cur;
 	int		leaked;
 
-	q = create_queue(rows * max_cols * 4); // create queue big enough for all cells
+	q = create_queue(rows * max_cols * 4);
 	leaked = 0;
 	enqueue(q, start.r, start.c);
 	while (!is_empty(q))
 	{
 		cur = dequeue(q);
-		if (cur.r < 0 || cur.c < 0 || cur.r >= rows
-			|| cur.c >= (int)ft_strlen(map[cur.r]) || map[cur.r][cur.c] == ' ')
-		{
-			leaked = 1;
+		leaked = check_cell(map, rows, cur);
+		if (leaked)
 			break ;
-		}
 		if (map[cur.r][cur.c] == 'V' || map[cur.r][cur.c] == '1')
 			continue ;
-			// wall or already visited = stop
-		map[cur.r][cur.c] = 'V'; // mark visited
+		map[cur.r][cur.c] = 'V';
 		enqueue(q, cur.r - 1, cur.c);
 		enqueue(q, cur.r + 1, cur.c);
 		enqueue(q, cur.r, cur.c - 1);
@@ -88,6 +84,19 @@ int	flood_fill_bfs(char **map, int rows, int max_cols, t_point start)
 	return (leaked);
 }
 
+// leaked: 0 = ok, 1 = outer space (X) or out of bounds, 2 = hole (' ')
+int	check_cell(char **map, int rows, t_point cur)
+{
+	if (cur.r < 0 || cur.c < 0 || cur.r >= rows
+		|| cur.c >= (int)ft_strlen(map[cur.r]))
+		return (1);
+	if (map[cur.r][cur.c] == 'X')
+		return (1);
+	if (map[cur.r][cur.c] == ' ')
+		return (2);
+	return (0);
+}
+
 void	validate_map_enclosed(t_game *game)
 {
 	char	**copy;
@@ -96,6 +105,7 @@ void	validate_map_enclosed(t_game *game)
 	int		i;
 
 	copy = copy_map(game);
+	mark_outer_spaces(copy, game->map_rows, game->map_cols);
 	start.r = (int)game->player.pos_y;
 	start.c = (int)game->player.pos_x;
 	result = flood_fill_bfs(copy, game->map_rows, game->map_cols, start);
@@ -106,6 +116,8 @@ void	validate_map_enclosed(t_game *game)
 		i++;
 	}
 	free(copy);
-	if (result)
+	if (result == 1)
 		error_exit("Map is not enclosed by walls");
+	else if (result == 2)
+		error_exit("Map contains hole (space inside map)");
 }

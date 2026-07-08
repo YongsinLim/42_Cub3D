@@ -6,7 +6,7 @@
 /*   By: yolim <yolim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/20 12:37:44 by yolim             #+#    #+#             */
-/*   Updated: 2026/05/30 13:29:02 by yolim            ###   ########.fr       */
+/*   Updated: 2026/07/08 15:21:05 by yolim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,12 @@ int	count_file_lines(char *path)
 	if (fd < 0)
 		error_exit("Cannot open file");
 	count = 0;
-	while ((line = get_next_line(fd)) != NULL)
+	line = get_next_line(fd);
+	while (line != NULL)
 	{
 		free(line);
 		count++;
+		line = get_next_line(fd);
 	}
 	close(fd);
 	return (count);
@@ -56,10 +58,12 @@ char	**read_file(char *path)
 	if (fd < 0)
 		error_exit("Cannot open file");
 	i = 0;
-	while ((line = get_next_line(fd)) != NULL)
+	line = get_next_line(fd);
+	while (line != NULL)
 	{
 		lines_array[i] = line;
 		i++;
+		line = get_next_line(fd);
 	}
 	lines_array[i] = NULL;
 	close(fd);
