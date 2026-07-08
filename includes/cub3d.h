@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jenlee <jenlee@studekl.edu.my>             +#+  +:+       +#+        */
+/*   By: yolim <yolim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 16:35:22 by yolim             #+#    #+#             */
-/*   Updated: 2026/06/26 16:13:43 by jenlee           ###   ########.fr       */
+/*   Updated: 2026/07/08 15:56:48 by yolim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,11 @@
 # include "../Libft/libft.h"
 
 // pending for minilibx header file!
-#include "../minilibx_macos_opengl/mlx.h"
-#include "../minilibx-linux/mlx.h"
+# include "../minilibx_macos_opengl/mlx.h"
+# include "../minilibx-linux/mlx.h"
 
-
-#define SCREEN_WIDTH 800
-#define SCREEN_HEIGHT 600
+# define SCREEN_WIDTH 800
+# define SCREEN_HEIGHT 600
 
 typedef struct s_texture
 {
@@ -52,25 +51,26 @@ typedef struct s_player
 	double	plane_y;
 }			t_player;
 
-typedef struct s_ray {
-    double  camera_x;
-    double  ray_dir_x;
-    double  ray_dir_y;
-    int     map_x;
-    int     map_y;
-    double  side_dist_x;
-    double  side_dist_y;
-    double  delta_dist_x;
-    double  delta_dist_y;
-    double  perp_wall_dist;
-    int     step_x;
-    int     step_y;
-    int     hit;
-    int     side;       // 0 for NS, 1 for EW
-    int     line_height;
-    int     draw_start;
-    int     draw_end;
-}               t_ray;
+typedef struct s_ray
+{
+	double	camera_x;
+	double	ray_dir_x;
+	double	ray_dir_y;
+	int		map_x;
+	int		map_y;
+	double	side_dist_x;
+	double	side_dist_y;
+	double	delta_dist_x;
+	double	delta_dist_y;
+	double	perp_wall_dist;
+	int		step_x;
+	int		step_y;
+	int		hit;
+	int		side;	// 0 for NS, 1 for EW
+	int		line_height;
+	int		draw_start;
+	int		draw_end;
+}				t_ray;
 
 // Store a grid coordinate (row, column) as one unit.
 typedef struct s_point
@@ -86,12 +86,19 @@ The queue is just an array with two pointers — head chases tail.
 		   ↑ head                                    ↑ tail
 		   next to process                           next empty slot
 */
-typedef struct s_queue {
+typedef struct s_queue
+{
 	t_point	*cells;	// array of coordinates waiting to be checked
 	int		head_idx;	// index of next cell to process (front)
 	int		tail_idx;	// index of next empty slot (back)
 	int		capacity;	// max cells the array can hold
 }			t_queue;
+
+/* char		**map:
+not 2D array bcos compile time dont know the actual map size
+(map sometime not square), char **map can malloc exactly the right size
+after read the .cub file
+*/
 
 typedef struct s_game
 {
@@ -102,85 +109,83 @@ typedef struct s_game
 	int			bpp;	// ← screen's bits per pixel
 	int			line_len;	// ← screen's line length
 	int			endian;	// ← screen's endian
-
-	char		**map;	// not 2D array bcos compile time dont know the actual map size (map sometime not square), char **map can malloc exactly the right size after read the .cub file
+	char		**map;
 	int			map_rows;
 	int			map_cols;
-
 	t_texture	tex[4]; // 0=NO 1=SO 2=WE 3=EA
 	int			floor_colour;
 	int			ceiling_colour;
-
 	t_player	player;
-	t_ray       ray;
+	t_ray		ray;
 }				t_game;
 
-
-
 // ----- Parse Map -----
-int		is_element_line(char *line);
-int		find_map_start(char **lines);
-void	parse_map(t_game *game, char **lines, int start);
-void	find_map_cols(t_game *game);
+int				is_element_line(char *line);
+int				find_map_start(char **lines);
+void			parse_map(t_game *game, char **lines, int start);
+void			find_map_cols(t_game *game);
 
 // ----- Parse Utils -----
-void	check_file_extension(char *path);
-int		count_file_lines(char *path);
-char	**read_file(char *path);
-int		is_map_line(char *line);
+void			check_file_extension(char *path);
+int				count_file_lines(char *path);
+char			**read_file(char *path);
+int				is_map_line(char *line);
 
 // ----- Parse Element -----
-void	set_if_empty(char *prefix, int position, t_game *game, char *path);
-void	parse_element(t_game *game, char *line);
-void	validate_elements(t_game *game);
-int		parse_rgb(char *str);
+void			set_if_empty(char *prefix, int position, t_game *game,
+					char *path);
+void			parse_element(t_game *game, char *line);
+void			validate_elements(t_game *game);
+int				parse_rgb(char *str);
 
 // ----- Player Setting -----
-void	find_player(t_game *game);
-int		find_player_start_col_in_row(char *row);
-void	set_player_direction(t_player *player, char dir);
+void			find_player(t_game *game);
+int				find_player_start_col_in_row(char *row);
+void			set_player_direction(t_player *player, char dir);
 
 // ----- Map Validation Utils -----
-t_queue *create_queue(int capacity);
-void    enqueue(t_queue *q, int r, int c);
-t_point dequeue(t_queue *q);
-int		is_empty(t_queue *q);
+t_queue			*create_queue(int capacity);
+void			enqueue(t_queue *q, int r, int c);
+t_point			dequeue(t_queue *q);
+int				is_empty(t_queue *q);
 
 // ----- Map Validation -----
-void	validate_map_chars(t_game *game);
-char	**copy_map(t_game *game);
-int		flood_fill_bfs(char **map, int rows, int max_cols, t_point start);
-void	validate_map_enclosed(t_game *game);
+void			validate_map_chars(t_game *game);
+char			**copy_map(t_game *game);
+int				flood_fill_bfs(char **map, int rows, int max_cols,
+					t_point start);
+int				check_cell(char **map, int rows, t_point cur);
+void			validate_map_enclosed(t_game *game);
+
+// ----- Space Handling -----
+void			bfs_mark_outer_space(char **map, int row, int max_cols,
+					t_point start);
+void			mark_outer_spaces(char **map, int rows, int max_cols);
 
 // ----- Parse -----
-void	parse(t_game *game, char *path);
+void			parse(t_game *game, char *path);
+void			free_lines(char **lines);
 
 // ----- Texture -----
-void	load_textures(t_game *game);
+void			load_textures(t_game *game);
 
 // ----- Report Error Functions -----
-void	error_exit(char *msg);
+void			error_exit(char *msg);
 
 // ------Initialising rendering------- //
-void draw_floor_and_ceiling(t_game *game);
-int render_frame(t_game *game);
-void init_render(t_game *game);
-void  my_mlx_pixel_put(t_game *game, int x, int y, int color);
+void			draw_floor_and_ceiling(t_game *game);
+int				render_frame(t_game *game);
+void			init_render(t_game *game);
+void			my_mlx_pixel_put(t_game *game, int x, int y, int color);
 
 // --------Raycasting```````````````````//
-void 			raycast_walls(t_game *game);
+void			raycast_walls(t_game *game);
 unsigned int	get_tex_color(t_texture *tex, int x, int y);
 int				get_tex_idx(t_game *game);
 void			draw_wall_column(t_game *game, int x);
 
 // --------Mlx Hooks-------------//
-int key_press(int keycode, t_game *game);
-int close_window(t_game *game);
-
-
-
-
-
-
+int				key_press(int keycode, t_game *game);
+int				close_window(t_game *game);
 
 #endif

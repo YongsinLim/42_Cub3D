@@ -29,21 +29,22 @@ Map starts after elements + empty lines
 int	find_map_start(char **lines)
 {
 	int	i;
-	int	found_element;
+	int	map_start;
 
 	i = 0;
-	found_element = 0;
+	map_start = -1;
 	while (lines[i])
 	{
-		if (is_element_line(lines[i]))
-			found_element = 1;
-		if (found_element && is_map_line(lines[i])
+		if (map_start == -1 && is_map_line(lines[i])
 			&& !is_element_line(lines[i]))
-			return (i);
+			map_start = i;
+		else if (map_start != -1 && is_element_line(lines[i]))
+			error_exit("Map must be the last element in the file");
 		i++;
 	}
-	error_exit("No map found in file");
-	return (-1);
+	if (map_start == -1)
+		error_exit("No map found in file");
+	return (map_start);
 }
 
 // Read map rows into game->map (char**)

@@ -6,7 +6,7 @@
 /*   By: jenlee <jenlee@studekl.edu.my>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/11 16:10:39 by jenlee            #+#    #+#             */
-/*   Updated: 2026/06/19 22:10:06 by yolim            ###   ########.fr       */
+/*   Updated: 2026/07/08 15:43:49 by yolim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@
 
 static void	move_player(t_game *game, double move_x, double move_y)
 {
-	double new_x;
-	double new_y;
-	double buffer;
+	double	new_x;
+	double	new_y;
+	double	buffer;
 
 	new_x = game->player.pos_x + move_x;
 	new_y = game->player.pos_y + move_y;
