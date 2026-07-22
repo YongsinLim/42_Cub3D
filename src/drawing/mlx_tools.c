@@ -27,6 +27,7 @@ int	render_frame(t_game *game)
 	handle_keys(game);
 	draw_floor_and_ceiling(game);
 	raycast_walls(game);
+	draw_minimap(game);
 	mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
 	return (0);
 }

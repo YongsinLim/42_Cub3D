@@ -6,7 +6,7 @@
 /*   By: jenlee <jenlee@studekl.edu.my>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 16:35:22 by yolim             #+#    #+#             */
-/*   Updated: 2026/07/22 17:25:17 by jenlee           ###   ########.fr       */
+/*   Updated: 2026/07/22 17:30:13 by jenlee           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,5 +192,6 @@ int				close_window(t_game *game);
 int				handle_keys(t_game *game);
 int				key_release(int keycode, t_game *game);
 int 			close_game(t_game *game);
+void			draw_minimap(t_game *game);
 
 #endif
