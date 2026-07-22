@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yolim <yolim@student.42kl.edu.my>          +#+  +:+       +#+        */
+/*   By: jenlee <jenlee@studekl.edu.my>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 16:35:22 by yolim             #+#    #+#             */
-/*   Updated: 2026/07/08 15:56:48 by yolim            ###   ########.fr       */
+/*   Updated: 2026/07/22 17:25:17 by jenlee           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <sys/time.h>	// for gettimeofday
 # include <math.h>	// for all functions of the math library
 # include "../Libft/libft.h"
+#include "keycodes.h"
 
 // pending for minilibx header file!
 # include "../minilibx_macos_opengl/mlx.h"
@@ -117,6 +118,7 @@ typedef struct s_game
 	int			ceiling_colour;
 	t_player	player;
 	t_ray		ray;
+	int         keys[65536];
 }				t_game;
 
 // ----- Parse Map -----
@@ -182,10 +184,13 @@ void			my_mlx_pixel_put(t_game *game, int x, int y, int color);
 void			raycast_walls(t_game *game);
 unsigned int	get_tex_color(t_texture *tex, int x, int y);
 int				get_tex_idx(t_game *game);
-void			draw_wall_column(t_game *game, int x);
+void			draw_wall_column(t_game *game, int x, int y);
 
 // --------Mlx Hooks-------------//
 int				key_press(int keycode, t_game *game);
 int				close_window(t_game *game);
+int				handle_keys(t_game *game);
+int				key_release(int keycode, t_game *game);
+int 			close_game(t_game *game);
 
 #endif

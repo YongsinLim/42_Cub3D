@@ -52,16 +52,11 @@ int	get_tex_idx(t_game *game)
 	return (0);
 }
 
-void	draw_wall_column(t_game *game, int x)
+static int	calculate_tex_x(t_game *game, t_texture *tex)
 {
-	t_texture	*tex;
-	double		wall_x;
-	int			tex_x;
-	double		step;
-	double		tex_pos;
-	int			y;
+	double	wall_x;
+	int		tex_x;
 
-	tex = &game->tex[get_tex_idx(game)];
 	if (game->ray.side == 0)
 		wall_x = game->player.pos_y + game->ray.perp_wall_dist
 			* game->ray.ray_dir_y;
@@ -73,6 +68,18 @@ void	draw_wall_column(t_game *game, int x)
 	if ((game->ray.side == 0 && game->ray.ray_dir_x < 0)
 		|| (game->ray.side == 1 && game->ray.ray_dir_y > 0))
 		tex_x = tex->width - tex_x - 1;
+	return (tex_x);
+}
+
+void	draw_wall_column(t_game *game, int x, int y)
+{
+	t_texture	*tex;
+	int			tex_x;
+	double		step;
+	double		tex_pos;
+
+	tex = &game->tex[get_tex_idx(game)];
+	tex_x = calculate_tex_x(game, tex);
 	step = 1.0 * tex->height / game->ray.line_height;
 	tex_pos = (game->ray.draw_start - SCREEN_HEIGHT / 2
 			+ game->ray.line_height / 2) * step;
