@@ -6,7 +6,7 @@
 /*   By: jenlee <jenlee@studekl.edu.my>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/26 16:12:54 by jenlee            #+#    #+#             */
-/*   Updated: 2026/06/26 16:12:54 by jenlee           ###   ########.fr       */
+/*   Updated: 2026/06/30 15:36:13 by yolim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,29 +22,41 @@ unsigned int	get_tex_color(t_texture *tex, int x, int y)
 	return (*(unsigned int *)dst);
 }
 
+/*
+┌─────────────────────────────┬─────────────────┬────────────────┬───────────────┐
+  │        Ray direction        │ Hits which wall │ Expected index │ Was returning │
+  ├─────────────────────────────┼─────────────────┼────────────────┼───────────────┤
+  │ ray_dir_y > 0 (going south) │ South wall → SO │ 1              │ 0 (NO) ❌      │
+  ├─────────────────────────────┼─────────────────┼────────────────┼───────────────┤
+  │ ray_dir_y < 0 (going north) │ North wall → NO │ 0              │ 1 (SO) ❌      │
+  ├─────────────────────────────┼─────────────────┼────────────────┼───────────────┤
+  │ ray_dir_x > 0 (going east)  │ East wall → EA  │ 3              │ 2 (WE) ❌      │
+  ├─────────────────────────────┼─────────────────┼────────────────┼───────────────┤
+  │ ray_dir_x < 0 (going west)  │ West wall → WE  │ 2              │ 3 (EA) ❌      │
+  └─────────────────────────────┴─────────────────┴────────────────┴───────────────┘
+
+  All four were swapped within their pairs. With 'S' spawn and dir_y = 1, every ray going
+  south returned NO texture — so you saw the north texture on the south wall, making it look
+  like you were facing north.
+ */
 int	get_tex_idx(t_game *game)
 {
 	if (game->ray.side == 0)
 	{
 		if (game->ray.ray_dir_x > 0)
-			return (2);
-		return (3);
+			return (3);
+		return (2);
 	}
 	if (game->ray.ray_dir_y > 0)
-		return (0);
-	return (1);
+		return (1);
+	return (0);
 }
 
-void	draw_wall_column(t_game *game, int x)
+static int	calculate_tex_x(t_game *game, t_texture *tex)
 {
-	t_texture	*tex;
-	double		wall_x;
-	int			tex_x;
-	double		step;
-	double		tex_pos;
-	int			y;
+	double	wall_x;
+	int		tex_x;
 
-	tex = &game->tex[get_tex_idx(game)];
 	if (game->ray.side == 0)
 		wall_x = game->player.pos_y + game->ray.perp_wall_dist
 			* game->ray.ray_dir_y;
@@ -56,6 +68,18 @@ void	draw_wall_column(t_game *game, int x)
 	if ((game->ray.side == 0 && game->ray.ray_dir_x < 0)
 		|| (game->ray.side == 1 && game->ray.ray_dir_y > 0))
 		tex_x = tex->width - tex_x - 1;
+	return (tex_x);
+}
+
+void	draw_wall_column(t_game *game, int x, int y)
+{
+	t_texture	*tex;
+	int			tex_x;
+	double		step;
+	double		tex_pos;
+
+	tex = &game->tex[get_tex_idx(game)];
+	tex_x = calculate_tex_x(game, tex);
 	step = 1.0 * tex->height / game->ray.line_height;
 	tex_pos = (game->ray.draw_start - SCREEN_HEIGHT / 2
 			+ game->ray.line_height / 2) * step;

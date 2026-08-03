@@ -5,6 +5,5 @@ To_Do :
 4. do readme
 
 5. add linux and macOS version to make LIBFT.a
-6. create more larger complex map to test the program
-7. fix norm
-8. check valgrind
+6. fix norm (left JJ part)
+7. check valgrind in campus / generate dockerfile to check leak
