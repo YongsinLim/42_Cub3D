@@ -6,7 +6,7 @@
 /*   By: jenlee <jenlee@studekl.edu.my>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/22 17:00:00 by jenlee            #+#    #+#             */
-/*   Updated: 2026/07/22 17:00:00 by jenlee           ###   ########.fr       */
+/*   Updated: 2026/08/18 18:50:32 by yolim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,26 @@ void	free_textures(t_game *game)
 	}
 }
 
-int close_game(t_game *game)
+#ifdef __linux__
+
+static void	destroy_mlx(t_game *game)
+{
+	if (!game->mlx)
+		return ;
+	mlx_destroy_display(game->mlx);
+	free(game->mlx);
+}
+#else
+
+static void	destroy_mlx(t_game *game)
+{
+	if (!game->mlx)
+		return ;
+	free(game->mlx);
+}
+#endif
+
+int	close_game(t_game *game)
 {
 	if (!game)
 		exit(0);
@@ -59,16 +78,7 @@ int close_game(t_game *game)
 		mlx_destroy_image(game->mlx, game->img);
 	if (game->win)
 		mlx_destroy_window(game->mlx, game->win);
-#ifdef __linux__
-	if (game->mlx)
-	{
-		mlx_destroy_display(game->mlx);
-		free(game->mlx);
-	}
-#else
-	if (game->mlx)
-		free(game->mlx);
-#endif
+	destroy_mlx(game);
 	exit(0);
 	return (0);
 }

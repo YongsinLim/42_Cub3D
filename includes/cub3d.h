@@ -6,7 +6,7 @@
 /*   By: jenlee <jenlee@student.42kl.edu.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 16:35:22 by yolim             #+#    #+#             */
-/*   Updated: 2026/08/03 14:23:15 by jenlee           ###   ########.fr       */
+/*   Updated: 2026/08/18 18:40:29 by yolim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include <sys/time.h>	// for gettimeofday
 # include <math.h>	// for all functions of the math library
 # include "../Libft/libft.h"
-#include "keycodes.h"
+# include "keycodes.h"
 
 // pending for minilibx header file!
 # include "../minilibx_macos_opengl/mlx.h"
@@ -118,7 +118,7 @@ typedef struct s_game
 	int			ceiling_colour;
 	t_player	player;
 	t_ray		ray;
-	int         keys[65536];
+	int			keys[65536];
 }				t_game;
 
 // ----- Parse Map -----
@@ -191,7 +191,7 @@ int				key_press(int keycode, t_game *game);
 int				close_window(t_game *game);
 int				handle_keys(t_game *game);
 int				key_release(int keycode, t_game *game);
-int 			close_game(t_game *game);
+int				close_game(t_game *game);
 void			draw_minimap(t_game *game);
 
 #endif

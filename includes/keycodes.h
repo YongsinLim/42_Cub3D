@@ -6,11 +6,9 @@
 /*   By: jenlee <jenlee@studekl.edu.my>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/22 17:07:14 by jenlee            #+#    #+#             */
-/*   Updated: 2026/07/22 17:07:14 by jenlee           ###   ########.fr       */
+/*   Updated: 2026/08/18 18:41:14 by yolim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include "cub3d.h"
 
 #ifndef KEYCODES_H
 # define KEYCODES_H
