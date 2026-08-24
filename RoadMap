@@ -50,3 +50,16 @@ RoadMap - 19.06.2026:
 
 RoadMap - 25.06.2026:
 1. Add load_texture logic
+
+RoadMap - 29.06.2026:
+1. Add mario wall texture
+2. Fix mario wall texture from XMP to correct XPM files
+
+RoadMap - 30.06.2026:
+1. Fix wall texture presented terbalik issue
+2. Update all valid & invalid maps using mario wall texture for 4 different directions
+
+RoadMap - 08.07.2026:
+1. Fix error msg issue
+2. Fix norm
+3. Determine inner space and outer space, and handle differently

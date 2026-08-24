@@ -28,8 +28,7 @@ void	raycast_walls(t_game *game)
 		calc_step_and_side_dist(game);
 		perform_dda(game);
 		calc_wall_projection(game);
-		draw_wall_column(game, x);
-		//draw_untextured_line(game, x);
+		draw_wall_column(game, x, 0);
 		x++;
 	}
 }
@@ -86,39 +85,46 @@ void	perform_dda(t_game *game)
 {
 	while (game->ray.hit == 0)
 	{
-		// Jump to next map square, either in x-direction, or in y-direction
 		if (game->ray.side_dist_x < game->ray.side_dist_y)
 		{
 			game->ray.side_dist_x += game->ray.delta_dist_x;
 			game->ray.map_x += game->ray.step_x;
-			game->ray.side = 0; // 0 means we hit an East/West wall
+			game->ray.side = 0;
 		}
 		else
 		{
 			game->ray.side_dist_y += game->ray.delta_dist_y;
 			game->ray.map_y += game->ray.step_y;
-			game->ray.side = 1; // 1 means we hit a North/South wall
+			game->ray.side = 1;
 		}
+		if (game->ray.map_y < 0 || game->ray.map_y >= game->map_rows
+			|| game->ray.map_x < 0
+			|| game->ray.map_x >= (int)ft_strlen(game->map[game->ray.map_y]))
+			break ;
 		if (game->map[game->ray.map_y][game->ray.map_x] == '1')
 			game->ray.hit = 1;
 	}
 }
 
-void calc_wall_projection(t_game *game)
+void	calc_wall_projection(t_game *game)
 {
-    if (game->ray.side == 0)
-        game->ray.perp_wall_dist = (game->ray.side_dist_x - game->ray.delta_dist_x);
-    else
-        game->ray.perp_wall_dist = (game->ray.side_dist_y - game->ray.delta_dist_y);
-    if (game->ray.perp_wall_dist == 0)
-        game->ray.perp_wall_dist = 0.01;
-    game->ray.line_height = (int)(SCREEN_HEIGHT / game->ray.perp_wall_dist);
-    game->ray.draw_start = -game->ray.line_height / 2 + SCREEN_HEIGHT / 2;
-    if (game->ray.draw_start < 0)
-        game->ray.draw_start = 0;
-    game->ray.draw_end = game->ray.line_height / 2 + SCREEN_HEIGHT / 2;
-    if (game->ray.draw_end >= SCREEN_HEIGHT)
-        game->ray.draw_end = SCREEN_HEIGHT - 1;
+	if (game->ray.side == 0)
+	{
+		game->ray.perp_wall_dist = (game->ray.side_dist_x - \
+game->ray.delta_dist_x);
+	}
+	else
+	{
+		game->ray.perp_wall_dist = (game->ray.side_dist_y - \
+game->ray.delta_dist_y);
+	}
+	if (game->ray.perp_wall_dist == 0)
+		game->ray.perp_wall_dist = 0.01;
+	game->ray.line_height = (int)(SCREEN_HEIGHT / game->ray.perp_wall_dist);
+	game->ray.draw_start = -game->ray.line_height / 2 + SCREEN_HEIGHT / 2;
+	if (game->ray.draw_start < 0)
+		game->ray.draw_start = 0;
+	game->ray.draw_end = game->ray.line_height / 2 + SCREEN_HEIGHT / 2;
+	if (game->ray.draw_end >= SCREEN_HEIGHT)
+		game->ray.draw_end = SCREEN_HEIGHT - 1;
 }
-
-

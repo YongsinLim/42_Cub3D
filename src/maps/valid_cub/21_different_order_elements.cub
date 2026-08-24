@@ -1,0 +1,12 @@
+SO ./src/textures/xpm/mario_lucky_block.xpm
+NO ./src/textures/xpm/mario_chest.xpm
+EA ./src/textures/xpm/mario_mushroom.xpm
+WE ./src/textures/xpm/mario_star.xpm
+
+F 100,100,100
+C 200,200,200
+
+11111
+1N001
+10001
+11111
