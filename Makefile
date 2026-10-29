@@ -6,16 +6,16 @@
 #    By: jenlee <jenlee@studekl.edu.my>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/05/18 23:41:47 by yolim             #+#    #+#              #
-#    Updated: 2026/06/11 15:51:39 by jenlee           ###   ########.fr        #
+#    Updated: 2026/10/29 23:00:00 by jenlee           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-# ----- Executable name -----
+# ----- Executable names -----
 NAME = cub3D
+NAME_BONUS = cub3D_bonus
 
 # ----- OS Detection -----
 UNAME_S := $(shell uname -s)
-# print kernel name of operating system
 
 # ----- Compiler and flags -----
 CC = cc
@@ -26,15 +26,37 @@ RM = rm -rf
 HEADER_DIR = includes
 SRC_DIR = src
 OBJ_DIR = obj
+OBJ_BONUS_DIR = obj_bonus
 
 # ----- Header file -----
 HEADER_LIB = $(HEADER_DIR)/cub3d.h
 
-# ----- Source Files -----
-SRC = $(shell find src -name "*.c")	#  need to change after all done!
+# ----- Mandatory Source Files -----
+SRCS = src/main.c \
+       src/drawing/ceiling_and_floor.c \
+       src/drawing/mlx_tools.c \
+       src/parse/map_validation.c \
+       src/parse/map_validation_utils.c \
+       src/parse/parse.c \
+       src/parse/parse_element.c \
+       src/parse/parse_map.c \
+       src/parse/parse_utils.c \
+       src/parse/player_setting.c \
+       src/parse/space_handling.c \
+       src/raycast/raycast_main.c \
+       src/raycast/raycast_textures.c \
+       src/textures/texture.c \
+       src/utils/cleanup.c \
+       src/utils/controls.c \
+       src/utils/exit.c
 
-# ----- Put .o Files in a dedicated folder -----
-OBJS = $(SRC:src/%.c=$(OBJ_DIR)/%.o)
+# ----- Bonus Source Files -----
+SRCS_BONUS = $(SRCS) \
+             src/bonus/minimap_bonus.c
+
+# ----- Object Files -----
+OBJS = $(SRCS:src/%.c=$(OBJ_DIR)/%.o)
+OBJS_BONUS = $(SRCS_BONUS:src/%.c=$(OBJ_BONUS_DIR)/%.o)
 
 # ----- Libft -----
 LIBFT_DIR = Libft
@@ -51,15 +73,20 @@ MLX_DIR = minilibx-linux
 MLX_LIB = $(MLX_DIR)/libmlx.a
 MLX_FLAGS = -L$(MLX_DIR) -lmlx -lXext -lX11 -lm
 endif
-# ifeq = if equal
-# only linux need -lm bcos macOS's math library is bundled into libSystem.dylib which is always linked automatically
 
 # ----- Rules -----
 all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT_LIB) $(MLX_LIB)
 	$(CC) $(CCFLAGS) $(OBJS) $(MLX_FLAGS) $(LIBFT_FLAGS) -o $(NAME)
-	@echo "Done. Executable is '$(NAME)'"
+	@echo "Done. Mandatory executable is '$(NAME)'"
+
+# ----- Bonus Rule -----
+bonus: $(NAME_BONUS)
+
+$(NAME_BONUS): $(OBJS_BONUS) $(LIBFT_LIB) $(MLX_LIB)
+	$(CC) $(CCFLAGS) $(OBJS_BONUS) $(MLX_FLAGS) $(LIBFT_FLAGS) -o $(NAME_BONUS)
+	@echo "Done. Bonus executable is '$(NAME_BONUS)'"
 
 # Rule to build libft library
 $(LIBFT_LIB):
@@ -69,20 +96,19 @@ $(LIBFT_LIB):
 $(MLX_LIB):
 	@$(MAKE) -s -C $(MLX_DIR)
 
-# Rule to compile source files into object files (creates obj subfolders as needed)
-# -I stands for "Include" & tells the compiler where to look for header files
-# $< is the first prerequisite of the rule (main.c)
-# $@ is the target of the rule (main.o)
+# Compile mandatory object files
 $(OBJ_DIR)/%.o: src/%.c $(HEADER_LIB)
 	@mkdir -p $(dir $@)
 	@$(CC) $(CCFLAGS) -I$(HEADER_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR) -c $< -o $@
 
-# ----- Bonus -----
-bonus: all
+# Compile bonus object files
+$(OBJ_BONUS_DIR)/%.o: src/%.c $(HEADER_LIB)
+	@mkdir -p $(dir $@)
+	@$(CC) $(CCFLAGS) -DBONUS=1 -I$(HEADER_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR) -c $< -o $@
 
 # ----- Clean Rules -----
 clean:
-	@$(RM) $(OBJ_DIR)
+	@$(RM) $(OBJ_DIR) $(OBJ_BONUS_DIR)
 	@echo "Object files cleaned."
 	@$(MAKE) -s -C $(LIBFT_DIR) clean
 	@echo "Object files in Libft cleaned."
@@ -90,7 +116,7 @@ clean:
 	@echo "Object files in MLX cleaned."
 
 fclean: clean
-	@$(RM) $(NAME)
+	@$(RM) $(NAME) $(NAME_BONUS)
 	@$(MAKE) -s -C $(LIBFT_DIR) fclean
 	@$(MAKE) -s -C $(MLX_DIR) clean
 	@echo "Full clean complete."

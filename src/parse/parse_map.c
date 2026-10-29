@@ -6,7 +6,7 @@
 /*   By: yolim <yolim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/20 12:36:24 by yolim             #+#    #+#             */
-/*   Updated: 2026/05/30 13:27:15 by yolim            ###   ########.fr       */
+/*   Updated: 2026/10/29 23:15:00 by jenlee           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,16 @@ int	find_map_start(char **lines)
 	return (map_start);
 }
 
+static int	is_empty_line(char *line)
+{
+	int	i;
+
+	i = 0;
+	while (line[i] == ' ' || line[i] == '\t')
+		i++;
+	return (line[i] == '\0' || line[i] == '\n');
+}
+
 // Read map rows into game->map (char**)
 void	parse_map(t_game *game, char **lines, int start)
 {
@@ -60,16 +70,19 @@ void	parse_map(t_game *game, char **lines, int start)
 		i++;
 		row++;
 	}
+	while (lines[i])
+	{
+		if (!is_empty_line(lines[i]))
+			error_exit("Invalid line or empty line inside map");
+		i++;
+	}
 	game->map_rows = row;
 	game->map = malloc(sizeof(char *) * (row + 1));
 	if (!game->map)
 		error_exit("Malloc failed");
-	i = 0;
-	while (i < row)
-	{
+	i = -1;
+	while (++i < row)
 		game->map[i] = ft_strtrim(lines[start + i], "\n");
-		i++;
-	}
 	game->map[i] = NULL;
 }
 

@@ -6,7 +6,7 @@
 /*   By: yolim <yolim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/20 12:35:51 by yolim             #+#    #+#             */
-/*   Updated: 2026/06/19 22:30:29 by yolim            ###   ########.fr       */
+/*   Updated: 2026/10/29 23:10:00 by jenlee           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,13 @@ void	set_if_empty(char *prefix, int position, t_game *game, char *path)
 void	parse_element(t_game *game, char *line)
 {
 	if (ft_strncmp(line, "NO ", 3) == 0)
-		set_if_empty("NO texture", 0, game, ft_strtrim(line + 3, " \n"));
+		set_if_empty("NO texture", 0, game, ft_strtrim(line + 3, " \t\n"));
 	else if (ft_strncmp(line, "SO ", 3) == 0)
-		set_if_empty("SO texture", 1, game, ft_strtrim(line + 3, " \n"));
+		set_if_empty("SO texture", 1, game, ft_strtrim(line + 3, " \t\n"));
 	else if (ft_strncmp(line, "WE ", 3) == 0)
-		set_if_empty("WE texture", 2, game, ft_strtrim(line + 3, " \n"));
+		set_if_empty("WE texture", 2, game, ft_strtrim(line + 3, " \t\n"));
 	else if (ft_strncmp(line, "EA ", 3) == 0)
-		set_if_empty("EA texture", 3, game, ft_strtrim(line + 3, " \n"));
+		set_if_empty("EA texture", 3, game, ft_strtrim(line + 3, " \t\n"));
 	else if (ft_strncmp(line, "F ", 2) == 0)
 	{
 		if (game->floor_colour != -1)
@@ -67,26 +67,51 @@ void	validate_elements(t_game *game)
 		error_exit("Missing Ceiling colour");
 }
 
+static int	is_valid_num(char *str)
+{
+	int	i;
+	int	digits;
+
+	i = 0;
+	digits = 0;
+	while (str[i] == ' ' || str[i] == '\t')
+		i++;
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		digits++;
+		i++;
+	}
+	while (str[i] == ' ' || str[i] == '\t' || str[i] == '\n')
+		i++;
+	return (digits > 0 && digits <= 3 && str[i] == '\0');
+}
+
 // Parse RGB color — "220,100,0" → int
 int	parse_rgb(char *str)
 {
 	char	**colour_array;
-	int		r;
-	int		g;
-	int		b;
+	int		rgb[3];
+	int		i;
+	int		commas;
 
+	commas = 0;
+	i = 0;
+	while (str[i])
+		if (str[i++] == ',')
+			commas++;
+	if (commas != 2)
+		error_exit("Invalid RGB format");
 	colour_array = ft_split(str, ',');
 	if (!colour_array || !colour_array[0] || !colour_array[1]
-		|| !colour_array[2] || colour_array[3])
-		error_exit("Invalid RGB format");
-	r = ft_atoi(colour_array[0]);
-	g = ft_atoi(colour_array[1]);
-	b = ft_atoi(colour_array[2]);
-	if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255)
+		|| !colour_array[2] || colour_array[3] || !is_valid_num(colour_array[0])
+		|| !is_valid_num(colour_array[1]) || !is_valid_num(colour_array[2]))
+		(free_lines(colour_array), error_exit("Invalid RGB format"));
+	rgb[0] = ft_atoi(colour_array[0]);
+	rgb[1] = ft_atoi(colour_array[1]);
+	rgb[2] = ft_atoi(colour_array[2]);
+	free_lines(colour_array);
+	if (rgb[0] < 0 || rgb[0] > 255 || rgb[1] < 0 || rgb[1] > 255
+		|| rgb[2] < 0 || rgb[2] > 255)
 		error_exit("Colour value out of range [0, 255]");
-	free(colour_array[0]);
-	free(colour_array[1]);
-	free(colour_array[2]);
-	free(colour_array);
-	return (r << 16 | g << 8 | b);
+	return (rgb[0] << 16 | rgb[1] << 8 | rgb[2]);
 }
