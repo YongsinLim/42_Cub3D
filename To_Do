@@ -1,9 +1,11 @@
-To_Do :
-1. upload minilibx-linux version file to github
-2. include the header file for what use in minilibx in this cub3d
-3. edit actual files name in Makefile
-4. do readme
-
-5. add linux and macOS version to make LIBFT.a
-6. fix norm (left JJ part)
-7. check valgrind in campus / generate dockerfile to check leak
+To_Do Status:
+[x] 1. Extract and stage minilibx-linux version files
+[x] 2. Include cross-platform "mlx.h" in cub3d.h
+[x] 3. Explicitly list all source file names in Makefile (no $(shell find ...))
+[x] 4. Create comprehensive README.md
+[x] 5. Separate mandatory (cub3D) and bonus (cub3D_bonus) targets in Makefile
+[x] 6. Fix ESC key memory leak (clean exit via close_game)
+[x] 7. Fix map_velidation_utils.c typo -> map_validation_utils.c
+[x] 8. Harden RGB parsing and empty-line map detection
+[x] 9. Verify 42 norm (0 functions > 25 lines, 0 files > 5 functions, 0 lines > 80 chars)
+[x] 10. Verify Valgrind memory leak tests (0 leaks, 0 errors)

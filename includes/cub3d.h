@@ -23,9 +23,7 @@
 # include "../Libft/libft.h"
 # include "keycodes.h"
 
-// pending for minilibx header file!
-# include "../minilibx_macos_opengl/mlx.h"
-# include "../minilibx-linux/mlx.h"
+# include "mlx.h"
 
 # define SCREEN_WIDTH 800
 # define SCREEN_HEIGHT 600
@@ -192,6 +190,8 @@ int				close_window(t_game *game);
 int				handle_keys(t_game *game);
 int				key_release(int keycode, t_game *game);
 int				close_game(t_game *game);
+# ifdef BONUS
 void			draw_minimap(t_game *game);
+# endif
 
 #endif

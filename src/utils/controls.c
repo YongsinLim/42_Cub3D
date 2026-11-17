@@ -18,21 +18,27 @@ static void	move_player(t_game *game, double move_x, double move_y)
 	double	new_x;
 	double	new_y;
 	double	buf;
+	int		py;
 
 	new_x = game->player.pos_x + move_x;
 	new_y = game->player.pos_y + move_y;
 	buf = 0.1;
-	if (move_x > 0 && game->map[(int)game->player.pos_y]
-		[(int)(new_x + buf)] != '1')
+	py = (int)game->player.pos_y;
+	if (move_x > 0 && (int)(new_x + buf) < (int)ft_strlen(game->map[py])
+		&& game->map[py][(int)(new_x + buf)] != '1')
 		game->player.pos_x = new_x;
-	else if (move_x < 0 && game->map[(int)game->player.pos_y]
-		[(int)(new_x - buf)] != '1')
+	else if (move_x < 0 && (int)(new_x - buf) >= 0
+		&& game->map[py][(int)(new_x - buf)] != '1')
 		game->player.pos_x = new_x;
-	if (move_y > 0 && game->map[(int)(new_y + buf)]
-		[(int)game->player.pos_x] != '1')
+	if (move_y > 0 && (int)(new_y + buf) < game->map_rows
+		&& (int)game->player.pos_x
+		< (int)ft_strlen(game->map[(int)(new_y + buf)])
+		&& game->map[(int)(new_y + buf)][(int)game->player.pos_x] != '1')
 		game->player.pos_y = new_y;
-	else if (move_y < 0 && game->map[(int)(new_y - buf)]
-		[(int)game->player.pos_x] != '1')
+	else if (move_y < 0 && (int)(new_y - buf) >= 0
+		&& (int)game->player.pos_x
+		< (int)ft_strlen(game->map[(int)(new_y - buf)])
+		&& game->map[(int)(new_y - buf)][(int)game->player.pos_x] != '1')
 		game->player.pos_y = new_y;
 }
 
@@ -84,7 +90,7 @@ int	key_press(int keycode, t_game *game)
 	if (keycode >= 0 && keycode < 65536)
 		game->keys[keycode] = 1;
 	if (keycode == KEY_ESC)
-		close_window(game);
+		close_game(game);
 	return (0);
 }
 

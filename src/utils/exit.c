@@ -25,7 +25,5 @@ void	error_exit(char *msg)
 
 int	close_window(t_game *game)
 {
-	(void)game;
-	printf("Window closed");
-	exit(0);
+	return (close_game(game));
 }
