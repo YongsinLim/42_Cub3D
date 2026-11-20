@@ -6,20 +6,20 @@
 /*   By: jenlee <jenlee@student.42kl.edu.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 16:35:22 by yolim             #+#    #+#             */
-/*   Updated: 2026/08/18 18:40:29 by yolim            ###   ########.fr       */
+/*   Updated: 2026/11/18 11:20:41 by yolim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
 
-# include <fcntl.h>	// for open
+# include <fcntl.h>		// for open
 # include <unistd.h>	// for close, read, write
-# include <stdio.h>	// for printf, perror
+# include <stdio.h>		// for printf, perror
 # include <stdlib.h>	// for malloc, free, exit
 # include <string.h>	// for strerror
 # include <sys/time.h>	// for gettimeofday
-# include <math.h>	// for all functions of the math library
+# include <math.h>		// for all functions of the math library
 # include "../Libft/libft.h"
 # include "keycodes.h"
 
@@ -31,11 +31,11 @@
 typedef struct s_texture
 {
 	char	*path;
-	void	*img;	// ← this is ONE WALL TEXTURE image
-	char	*addr;	// ← pixel memory of THAT TEXTURE
-	int		bpp;	// ← texture's bits per pixel
+	void	*img;		// ← this is ONE WALL TEXTURE image
+	char	*addr;		// ← pixel memory of THAT TEXTURE
+	int		bpp;		// ← texture's bits per pixel
 	int		line_len;	// ← texture's line length
-	int		endian;	// ← texture's endian
+	int		endian;		// ← texture's endian
 	int		width;
 	int		height;
 }			t_texture;
@@ -65,7 +65,7 @@ typedef struct s_ray
 	int		step_x;
 	int		step_y;
 	int		hit;
-	int		side;	// 0 for NS, 1 for EW
+	int		side;		// 0 for NS, 1 for EW
 	int		line_height;
 	int		draw_start;
 	int		draw_end;
@@ -87,7 +87,7 @@ The queue is just an array with two pointers — head chases tail.
 */
 typedef struct s_queue
 {
-	t_point	*cells;	// array of coordinates waiting to be checked
+	t_point	*cells;		// array of coordinates waiting to be checked
 	int		head_idx;	// index of next cell to process (front)
 	int		tail_idx;	// index of next empty slot (back)
 	int		capacity;	// max cells the array can hold
@@ -101,17 +101,17 @@ after read the .cub file
 
 typedef struct s_game
 {
-	void		*mlx;	// ← this is the SCREEN buffer
+	void		*mlx;		// ← this is the SCREEN buffer
 	void		*win;
 	void		*img;
-	char		*addr;	// ← pixel memory of the SCREEN
-	int			bpp;	// ← screen's bits per pixel
+	char		*addr;		// ← pixel memory of the SCREEN
+	int			bpp;		// ← screen's bits per pixel
 	int			line_len;	// ← screen's line length
-	int			endian;	// ← screen's endian
+	int			endian;		// ← screen's endian
 	char		**map;
 	int			map_rows;
 	int			map_cols;
-	t_texture	tex[4]; // 0=NO 1=SO 2=WE 3=EA
+	t_texture	tex[4];		// 0=NO 1=SO 2=WE 3=EA
 	int			floor_colour;
 	int			ceiling_colour;
 	t_player	player;
@@ -190,6 +190,7 @@ int				close_window(t_game *game);
 int				handle_keys(t_game *game);
 int				key_release(int keycode, t_game *game);
 int				close_game(t_game *game);
+
 # ifdef BONUS
 void			draw_minimap(t_game *game);
 # endif

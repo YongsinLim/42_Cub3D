@@ -6,7 +6,7 @@
 /*   By: yolim <yolim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/18 11:49:40 by yolim             #+#    #+#             */
-/*   Updated: 2026/06/18 12:34:30 by yolim            ###   ########.fr       */
+/*   Updated: 2026/11/18 15:47:53 by yolim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_queue	*create_queue(int capacity)
 before:  [ (1,1) | (0,1) | _empty_ ]
                               ↑ tail
   after:   [ (1,1) | (0,1) | (2,1) ]
-                                      ↑ tail
+							   ↑ tail
  */
 void	enqueue(t_queue *q, int r, int c)
 {
@@ -43,9 +43,9 @@ void	enqueue(t_queue *q, int r, int c)
 
 /* return cell at head, then move head forward
 before:  [ (1,1) | (0,1) | (2,1) ]
-↑ head
+			↑ head
 after:   [ (1,1) | (0,1) | (2,1) ]
-↑ head
+					↑ head
 returned: (1,1)
 */
 t_point	dequeue(t_queue *q)
